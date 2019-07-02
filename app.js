@@ -2,18 +2,19 @@ import createError from 'http-errors';
 import express, { json, urlencoded } from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-
+import dotenv from 'dotenv';
 import authenticationRouter from './routes/authentication';
 
 
 const app = express();
+dotenv.config()
 
 app.use(logger('dev'));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/api/v1/', authenticationRouter);
+app.use('/api/v1', authenticationRouter);
 
 app.get('/', (request, response)=>{
   response.status(200).json({
