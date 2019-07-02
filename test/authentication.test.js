@@ -17,10 +17,10 @@ describe('Signup controller test', ()=>{
               .post('/api/v1/signup')
               .send(userData)
               .end((error, response) => {
-                expect(response.body).to.have.property('status').eql(201);
+                expect(response).to.have.status(201);
+                expect(response.body).to.have.property('status');
                 expect(response.body).to.have.property('data');
                 expect(response.body).to.have.property('token');
-                expect(response.status).to.equal(201);
                 done();
               });
           });
