@@ -10,7 +10,7 @@ describe('Signup controller test', ()=>{
                 first_name: "Hameed",
                 last_name: "Rasheed",
                 password: "Password123#",
-                email: "aajd@a.com"
+                email:"hameedabdulrahaman@gmail.com"
             };
             chai
               .request(app)
