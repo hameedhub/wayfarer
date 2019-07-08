@@ -27,7 +27,7 @@ const isBoolean = /^(true|false|1|0)$/;
  */
 class ValidateAuthentication {
     
-    static ValidateSignup(request, response, next){
+    static validateSignup(request, response, next){
         /**
          * @description Valdiate user signup details 
          * @param { Object } request contains the user details
@@ -105,6 +105,53 @@ class ValidateAuthentication {
             return response.status(422).json({
                 status: 422,
                 error: 'Invalid email address'
+            })
+        }
+        next();
+    }
+    static validateLogin (request, response, next){
+        /**
+         *@description Validate user data on login
+         *@param { email, password }
+         @return { Object }
+         @error { status, error message }
+         */
+
+        const { email, password} =request.body;
+        if (Object.keys(request.body).length> 2){
+            return response.status(400).json({
+                status: 400,
+                error: 'Only provided email and password'
+            })
+        }
+        if(isEmpty(email) && isEmpty(password)){
+            return response.status(400).json({
+                status: 400,
+                error: 'Email and Password is required'
+            })
+        }
+        if(isEmpty(email)){
+            return response.status(400).json({
+                status: 400,
+                error: 'Email is required'
+            })
+        }
+        if(!isValidEmail.test(email)){
+            return response.status(422).json({
+                status: 422,
+                error: 'Invalid email address'
+            })
+        }
+        if(isEmpty(password)){
+            return response.status(400).json({
+                status: 400,
+                error: 'Password is required'
+            })
+        }
+        if(!isValidPassword.test(password)){
+            return response.status(422).json({
+                status: 422,
+                error: 'Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character'
             })
         }
         next();
