@@ -2,14 +2,14 @@
     {
         "id": 1,
         "email": "test@mail.com",
-        "password": "password",
+        "password": "$2a$10$ty/7H16rRmRb9UsK0rGwr.OPL3kttzV9IMQ23QZDUjakJcg/JVgqK",
         "first_name": "Hameed",
         "last_name": "Abdulrahaman"
     },
     {
         "id": 2,
         "email": "test1@mail.com",
-        "password": "password123#",
+        "password": "$2a$10$ty/7H16rRmRb9UsK0rGwr.OPL3kttzV9IMQ23QZDUjakJcg/JVgqK",
         "first_name": "Prince",
         "last_name": "Micheal"
     }

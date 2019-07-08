@@ -7,6 +7,7 @@ const router = Router();
  * @description authentication middlewares
  */
 
-router.post('/signup', AuthValidation.ValidateSignup, AuthenticationController.signup);
+router.post('/signup', AuthValidation.validateSignup, AuthenticationController.signup);
+router.post('/login', AuthValidation.validateLogin, AuthenticationController.login);
 
 export default router;

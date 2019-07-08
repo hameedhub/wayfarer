@@ -28,6 +28,30 @@ class Authentication {
                 token
         })
     }
+    static login (request, response){
+        const checkUser = users.find((user)=> user.email === request.body.email);
+        if(!checkUser){
+            return response.status(401).json({
+                status: 401,
+                error: 'Incorrect email address'
+            })
+        }
+        const checkPassowrd = Encryptor.compare(request.body.password, checkUser.password);
+        if(!checkPassowrd){
+            return response.status(401).json({
+                status: 401,
+                error: "Incorrect Password"
+            })
+        }
+        const { password, ...data } = checkUser;
+        const token = jwt.sign(checkUser, process.env.JWT_SECRET);
+        return response.status(200).json({
+            status: 200,
+            data,
+            token
+        })
+
+    }
 
 }
 

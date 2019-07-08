@@ -21,7 +21,7 @@ class Encryptor{
          * @param { compare } data to compare
          * @param { hash } data hash to compare with
          */
-        const decrypted = bcrypt.compare(compare, hash);
+        const decrypted = bcrypt.compareSync(compare, hash);
         return decrypted;
     }
 }
