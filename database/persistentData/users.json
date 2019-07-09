@@ -4,13 +4,23 @@
         "email": "test@mail.com",
         "password": "$2a$10$ty/7H16rRmRb9UsK0rGwr.OPL3kttzV9IMQ23QZDUjakJcg/JVgqK",
         "first_name": "Hameed",
-        "last_name": "Abdulrahaman"
+        "last_name": "Abdulrahaman",
+        "is_admin": false
     },
     {
         "id": 2,
         "email": "test1@mail.com",
         "password": "$2a$10$ty/7H16rRmRb9UsK0rGwr.OPL3kttzV9IMQ23QZDUjakJcg/JVgqK",
         "first_name": "Prince",
-        "last_name": "Micheal"
+        "last_name": "Micheal",
+        "is_admin": false
+    },
+    {
+        "id": 3,
+        "email": "admin@mail.com",
+        "password":"$2a$10$ty/7H16rRmRb9UsK0rGwr.OPL3kttzV9IMQ23QZDUjakJcg/JVgqK",
+        "first_name": "Admin",
+        "last_name": "Micheal",
+        "is_admin": true
     }
 ]
