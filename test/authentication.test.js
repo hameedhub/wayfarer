@@ -5,24 +5,24 @@ chai.use(chaiHttp);
 
 
 describe('Signup controller test', ()=>{
-        // it('should be able to register user when all the parameters are provided', done => {
-        //     const userData = {
-        //         first_name: "Hameed",
-        //         last_name: "Rasheed",
-        //         password: "Password123#",
-        //         email:"hameedabdulrahaman@gmail.com"
-        //     };
-        //     chai
-        //       .request(app)
-        //       .post('/api/v1/signup')
-        //       .send(userData)
-        //       .end((error, response) => {
-        //         expect(response.body).to.have.property('status').eql(201);
-        //         expect(response.body).to.have.property('data');
-        //         expect(response.body).to.have.property('token');
-        //         done();
-        //       });
-        //   });
+        it('should be able to register user when all the parameters are provided', done => {
+            const userData = {
+                first_name: "Hameed",
+                last_name: "Rasheed",
+                password: "Password123#",
+                email:"test123@mail.com"
+            };
+            chai
+              .request(app)
+              .post('/api/v1/signup')
+              .send(userData)
+              .end((error, response) => {
+                expect(response.body).to.have.property('status').eql(201);
+                expect(response.body).to.have.property('data');
+                expect(response.body).to.have.property('token');
+                done();
+              });
+          });
           it('should not register user if no field are provided', done => {
             const userData = {};
             chai
@@ -239,23 +239,23 @@ describe('Signup controller test', ()=>{
           });
     })
 describe('Login Authentication', ()=>{
-  // it('should be able to login user', (done)=>{
-  //   const userData ={ 
-  //     email: 'test@mail.com',
-  //     password: 'Password123#'
-  //   }
-  //   chai
-  //   .request(app)
-  //   .post('/api/v1/login')
-  //   .send(userData)
-  //   .end((error, response)=>{
-  //     expect(response.body).to.have.property('status').eql(200);
-  //     expect(response.body).to.have.property('data');
-  //     expect(response.body).to.have.property('token');
-  //     expect(response.status).to.equal(200);
-  //     done();
-  //   })
-  // })
+  it('should be able to login user', (done)=>{
+    const userData ={ 
+      email: 'test@mail.com',
+      password: 'Password123#'
+    }
+    chai
+    .request(app)
+    .post('/api/v1/login')
+    .send(userData)
+    .end((error, response)=>{
+      expect(response.body).to.have.property('status').eql(200);
+      expect(response.body).to.have.property('data');
+      expect(response.body).to.have.property('token');
+      expect(response.status).to.equal(200);
+      done();
+    })
+  })
   it('should not login user email is not correct', (done)=>{
     const userData ={
       email: 'tester@mail.com',
