@@ -19,7 +19,7 @@ describe('Signup controller test', ()=>{
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(201);
                 expect(response.body).to.have.property('data');
-                expect(response.body).to.have.property('token');
+                expect(response.status).to.equal(201);
                 done();
               });
           });
