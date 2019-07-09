@@ -27,7 +27,7 @@ const isBoolean = /^(true|false|1|0)$/;
  * @param { Object } next 
  * @return { Object } status code and error message 
  */
- export default class ValidateAuthentication {
+class ValidateAuthentication {
     
     static validateSignup(request, response, next){
         /**
@@ -161,3 +161,4 @@ const isBoolean = /^(true|false|1|0)$/;
 }
 
 export { isEmpty, isIntegar};
+export default ValidateAuthentication;
