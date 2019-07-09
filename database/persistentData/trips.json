@@ -1,0 +1,29 @@
+[
+    {
+        "trip_id": 1,
+        "bus_id": 324,
+        "origin": "Lagos",
+        "destination": "Kogi",
+        "trip_date": "02-01-2011",
+        "fare": 2000.00,
+        "status": "active"
+    },
+    {
+        "trip_id": 2,
+        "bus_id": 124,
+        "origin": "Benin",
+        "destination": "Abuja",
+        "trip_date": "01-01-2011",
+        "fare": 300.00,
+        "status": "active"
+    },
+    {
+        "trip_id": 3,
+        "bus_id": 9804,
+        "origin": "Kaduna",
+        "destination": "Ibadan",
+        "trip_date": "02-12-2019",
+        "fare": 2000.00,
+        "status": "active"
+    }
+]

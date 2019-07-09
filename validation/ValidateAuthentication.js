@@ -2,6 +2,7 @@
  * @description isEmpty check for empty input field
  * @return { boolean }
  */
+
 const isEmpty = value => {
     return (
       value === undefined ||
@@ -17,6 +18,7 @@ const isValidName = /^[a-zA-Z]{3,15}$/;
 const isValidPassword = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 const whiteSpace =/\s/g;
 const isBoolean = /^(true|false|1|0)$/;
+
 /**
  * @description Validate the authentication routes
  * @class { ValidateAuthenication } 
@@ -25,7 +27,7 @@ const isBoolean = /^(true|false|1|0)$/;
  * @param { Object } next 
  * @return { Object } status code and error message 
  */
-class ValidateAuthentication {
+ export default class ValidateAuthentication {
     
     static validateSignup(request, response, next){
         /**
@@ -158,4 +160,4 @@ class ValidateAuthentication {
     }
 }
 
-export default ValidateAuthentication;
+export { isEmpty, isIntegar};
