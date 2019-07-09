@@ -4,6 +4,7 @@ import app from '../app';
 chai.use(chaiHttp);
 
 let token;
+let userToken
 describe('Test Create Trip', ()=>{
     before(done=>{
         const adminLogin={
@@ -17,6 +18,20 @@ describe('Test Create Trip', ()=>{
            token = `Bearer ${response.body.token}`;
             done();
         })
+    })
+    before(done=>{
+        const userLogin={
+            email: "test@mail.com",
+            password: 'Password123#'
+        }
+        chai.request(app)
+        .post('/api/v1/login')
+        .send(userLogin)
+        .end((error, response)=>{
+           userToken = `Bearer ${response.body.token}`;
+            done();
+        })
+    
     })
     it('should be able to create a trip', (done)=>{
         const tripData ={
@@ -50,6 +65,26 @@ describe('Test Create Trip', ()=>{
         .request(app)
         .post('/api/v1/trip')
         .send(tripData)
+        .end((error, response)=>{
+           expect(response.body).to.have.status(401);
+           expect(response.body).to.have.property('error');
+           expect(response.body).to.have.property('status').eql(401);
+           done();
+        })
+    }),
+    it('should not create trip if not authorized as admin', (done)=>{
+        const tripData ={
+            bus_id: "342",
+            origin:  "Lagos",
+            destination: "Abuja-Usa",
+            trip_date: "3-12-2019",
+            fare:"21.0"
+        }
+        chai
+        .request(app)
+        .post('/api/v1/trip')
+        .send(tripData)
+        .set('Authorization', userToken)
         .end((error, response)=>{
            expect(response.body).to.have.status(401);
            expect(response.body).to.have.property('error');
@@ -292,6 +327,28 @@ describe('Test Create Trip', ()=>{
            expect(response.body).to.have.property('error');
            expect(response.body).to.have.property('status').eql(422);
            done();
+        })
+    }),
+    //view trips
+    it('should allow users and admin to view trips with vaild token', ()=>{
+        chai
+        .request(app)
+        .get('/api/v1/trips')
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(200);
+            expect(response.body).to.have.property('data');
+            expect(response.body).to.have.property('status').eql(200);
+        })
+    })
+    it('should not login user if token is not available', ()=>{
+        chai
+        .request(app)
+        .get('/api/v1/trips')
+        .end((error, response)=>{
+            expect(response).to.have.status(401);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(401);
         })
     })
     

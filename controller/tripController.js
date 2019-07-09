@@ -20,6 +20,21 @@ static createTrip(request, response){
         data
     })
 }
+static viewTrip(request, response){
+     /**
+     * @description Admin and user view trips
+     * @param { Object } request 
+     * @param { Object } response
+     * @return { JSON } return  
+     */
+    //user data..
+    const { id, is_admin } = request.userData;
+
+    return response.status(200).json({
+        status: 200,
+        data: trips
+    })
+}
 
 }
 
