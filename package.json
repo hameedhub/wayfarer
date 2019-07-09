@@ -6,6 +6,7 @@
   "scripts": {
     "start": "babel-node app.js",
     "dev": "nodemon --exec babel-node app.js",
+    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm run test",
     "test": "nyc mocha test/*js --require @babel/register --exit --timeout 10000"
   },
   "dependencies": {
