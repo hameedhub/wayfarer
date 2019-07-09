@@ -1,5 +1,8 @@
 language: node_js
 node_js: 
   - "stable"
+env:
+  global:
+    - JWT_SECRET=wayfarer
 before-script: npm install 
 script: mocha test/*.js --require @babel/register --exit
