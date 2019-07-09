@@ -18,9 +18,9 @@ describe('Signup controller test', ()=>{
               .send(userData)
               .end((error, response) => {
                 console.log(error);
-                expect(response.body).to.have.property('status').eql(201);
+                console.log(response.body);
                 expect(response.body).to.have.property('data');
-                expect(response.status).to.equal(201);
+                expect(response.body).to.have.property('token');
                 done();
               });
           });
