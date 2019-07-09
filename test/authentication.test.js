@@ -17,6 +17,7 @@ describe('Signup controller test', ()=>{
               .post('/api/v1/signup')
               .send(userData)
               .end((error, response) => {
+                console.log(error);
                 expect(response.body).to.have.property('status').eql(201);
                 expect(response.body).to.have.property('data');
                 expect(response.status).to.equal(201);
