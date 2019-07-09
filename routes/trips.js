@@ -7,5 +7,6 @@ const router = Router();
 
 
 router.post('/trip', Authentication.checkToken, tokenAccess.adminAccess, validation.createTripValidation, Controller.createTrip);
+router.get('/trips', Authentication.checkToken, Controller.viewTrip);
 
 export default router;
