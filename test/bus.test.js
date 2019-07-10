@@ -313,5 +313,17 @@ describe('Test Bus Route', ()=>{
            done();
         })
     })
+    it('should be able to get buses provided an admin is logged in', (done)=>{
+        chai
+        .request(app)
+        .get('/api/v1/buses')
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(200);
+            expect(response.body).to.have.property('data');
+            expect(response.body).to.have.property('status').eql(200);
+            done();
+        })
+    })
 })
 
