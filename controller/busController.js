@@ -17,8 +17,11 @@ class Bus {
         data
       })
     }
-    static getBus(request, response){
-
+    static getBuses(request, response){
+      return response.status(200).json({
+        status: 200,
+        data: bus
+      })
     }
 }
 
