@@ -62,7 +62,7 @@ describe('Test Bookings', ()=>{
         .send(bookingData)
         .set('Authorization', adminToken)
         .end((error, response)=>{
-           expect(response.body).to.have.status(401);
+           expect(response).to.have.status(401);
            expect(response.body).to.have.property('error');
            expect(response.body).to.have.property('status').eql(401);
            done();
@@ -79,7 +79,7 @@ describe('Test Bookings', ()=>{
         .send(bookingData)
         .set('Authorization', userToken)
         .end((error, response)=>{
-           expect(response.body).to.have.status(404);
+           expect(response).to.have.status(404);
            expect(response.body).to.have.property('error');
            expect(response.body).to.have.property('status').eql(404);
            done();
@@ -111,7 +111,7 @@ describe('Test Bookings', ()=>{
         .send(bookingData)
         .set('Authorization', userToken)
         .end((error, response)=>{
-           expect(response.body).to.have.status(400);
+           expect(response).to.have.status(400);
            expect(response.body).to.have.property('error');
            expect(response.body).to.have.property('status').eql(400);
            done();
@@ -128,7 +128,7 @@ describe('Test Bookings', ()=>{
         .send(bookingData)
         .set('Authorization', userToken)
         .end((error, response)=>{
-           expect(response.body).to.have.status(400);
+           expect(response).to.have.status(400);
            expect(response.body).to.have.property('error');
            expect(response.body).to.have.property('status').eql(400);
            done();
@@ -145,7 +145,7 @@ describe('Test Bookings', ()=>{
         .send(bookingData)
         .set('Authorization', userToken)
         .end((error, response)=>{
-           expect(response.body).to.have.status(422);
+           expect(response).to.have.status(422);
            expect(response.body).to.have.property('error');
            expect(response.body).to.have.property('status').eql(422);
            done();
@@ -179,10 +179,35 @@ describe('Test Bookings', ()=>{
         .send(bookingData)
         .set('Authorization', userToken)
         .end((error, response)=>{
-           expect(response.body).to.have.status(422);
+           expect(response).to.have.status(422);
            expect(response.body).to.have.property('error');
            expect(response.body).to.have.property('status').eql(422);
            done();
         })
     })
+    it('should get all booking is token access is admin', (done)=>{
+        chai
+        .request(app)
+        .get('/api/v1/bookings')
+        .set('Authorization', adminToken)
+        .end((error, response)=>{
+            expect(response).to.have.status(200);
+            expect(response.body).to.have.property('status').eql(200);
+            expect(response.body).to.have.property('data');
+            done();
+        })
+    })
+    it('should get user booking if token access is not an admin', (done)=>{
+        chai
+        .request(app)
+        .get('/api/v1/bookings')
+        .set('Authorization', userToken)
+        .end((error, response)=>{
+            expect(response).to.have.status(200);
+            expect(response.body).to.have.property('status').eql(200);
+            expect(response.body).to.have.property('data');
+            done();
+        })
+    })
+    
 })

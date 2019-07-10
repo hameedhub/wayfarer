@@ -15,7 +15,7 @@ class Bookings{
        const { bus_id, trip_date} = checkTripID;
         const { id, first_name, last_name, email, is_admin } = request.userData;
         const data = {
-            booking_id: 1,
+            booking_id: bookings.length+1,
             user_id: id,
             trip_id,
             bus_id,
@@ -30,6 +30,21 @@ class Bookings{
             status: 201,
             data,
             message: 'Your booking was successful'
+        })
+    }
+    static bookings(request, response){
+        if(request.userData.is_admin === false){
+            const user_id = request.userData.id;
+            const userBookings = bookings.filter(book => book.user_id === user_id);
+            return response.status(200).json({
+                status: 200,
+                data: userBookings,
+                message: 'Your bookings'
+            })
+        }
+        return response.status(200).json({
+            status: 200,
+            data: bookings
         })
     }
 }
