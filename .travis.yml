@@ -6,3 +6,6 @@ env:
     - JWT_SECRET=wayfarer
 before-script: npm install 
 script: mocha test/*.js --require @babel/register --exit
+
+after_success:
+- npm run coveralls
