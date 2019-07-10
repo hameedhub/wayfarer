@@ -194,9 +194,10 @@ describe('Test Bookings', ()=>{
             expect(response).to.have.status(200);
             expect(response.body).to.have.property('status').eql(200);
             expect(response.body).to.have.property('data');
+            done();
         })
     })
-    it('should get all booking is token access is admin', (done)=>{
+    it('should get user booking if token access is not an admin', (done)=>{
         chai
         .request(app)
         .get('/api/v1/bookings')
@@ -205,6 +206,7 @@ describe('Test Bookings', ()=>{
             expect(response).to.have.status(200);
             expect(response.body).to.have.property('status').eql(200);
             expect(response.body).to.have.property('data');
+            done();
         })
     })
     
