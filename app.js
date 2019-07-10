@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import authenticationRouter from './routes/authentication';
 import tripRouter from './routes/trips';
 import busRouter from './routes/bus';
+import bookingsRouter from './routes/bookings';
 
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/v1', authenticationRouter);
 app.use('/api/v1/', tripRouter);
 app.use('/api/v1/', busRouter);
+app.use('/api/v1/', bookingsRouter);
 
 app.get('/', (request, response)=>{
   response.status(200).json({
