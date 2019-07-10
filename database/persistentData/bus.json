@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "number_plate": "232-AZ",
+        "manufacturer": "Toyota",
+        "model": "G343",
+        "year": 2009,
+        "capacity": 12
+    },
+    {
+        "id": 2,
+        "number_plate": "ABJ-342-AZ",
+        "manufacturer": "Toyota",
+        "model": "ACE",
+        "year": 2009,
+        "capacity": 20
+    },
+    {
+        "id": 3,
+        "number_plate": "PH-432Z",
+        "manufacturer": "Toyota",
+        "model": "Snow",
+        "year": 2009,
+        "capacity": 15
+    },
+    {
+        "id": 4,
+        "number_plate": "232-AZ",
+        "manufacturer": "Toyota",
+        "model": "G343",
+        "year": 2009,
+        "capacity": 10
+    }
+]
