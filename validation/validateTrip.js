@@ -98,3 +98,4 @@ class TripValidation {
 }
 
 export default TripValidation;
+export { isString };
