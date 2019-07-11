@@ -47,6 +47,23 @@ class Bookings{
             data: bookings
         })
     }
+    static deleteBookings(request, response){
+        const booking_id = request.params.bookingId;
+        const booking = bookings.find(book=>book.booking_id === +booking_id);
+        if(!booking){
+            return response.status(404).json({
+                status: 404,
+                error: 'Booking ID does not exist'
+            })
+        }
+        const bookIndex = bookings.indexOf(booking);
+        bookings.splice(bookIndex, 1);
+        return response.status(200).json({
+            status: 204,
+            message: 'Booking was successfully deleted'
+        })
+
+    }
 }
 
 export default Bookings;

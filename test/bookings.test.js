@@ -5,7 +5,8 @@ import app from '../app';
 chai.use(chaiHttp);
 
 let adminToken;
-let userToken
+let userToken;
+let bookingId;
 describe('Test Bookings', ()=>{
     before(done=>{
         const adminLogin={
@@ -45,6 +46,7 @@ describe('Test Bookings', ()=>{
         .send(bookingData)
         .set('Authorization', userToken)
         .end((error, response)=>{
+            bookingId = response.body.data.booking_id;
            expect(response).to.have.status(201);
            expect(response.body).to.have.property('data');
            expect(response.body).to.have.property('status').eql(201);
@@ -209,5 +211,65 @@ describe('Test Bookings', ()=>{
             done();
         })
     })
-    
+    it('should be able to delete booking', (done)=>{
+        chai
+        .request(app)
+        .delete(`/api/v1/bookings/${bookingId}`)
+        .set('Authorization', userToken)
+        .end((error, response)=>{
+            expect(response).to.have.status(200);
+            expect(response.body).to.have.property('status').eql(204);
+            expect(response.body).to.have.property('message');
+            done();
+        })
+    })
+    it('should delete booking if body parameter is passed', (done)=>{
+        chai
+        .request(app)
+        .delete(`/api/v1/bookings/${bookingId}`)
+        .set('Authorization', userToken)
+        .send({id: 1})
+        .end((error, response)=>{
+            expect(response).to.have.status(400);
+            expect(response.body).to.have.property('status').eql(400);
+            expect(response.body).to.have.property('error');
+            done();
+        })
+    })
+    it('should not delete booking is id is not provided', (done)=>{
+        chai
+        .request(app)
+        .delete(`/api/v1/bookings/`)
+        .set('Authorization', userToken)
+        .end((error, response)=>{
+            expect(response).to.have.status(404);
+            expect(response.body).to.have.property('status').eql(404);
+            expect(response.body).to.have.property('error');
+            done();
+        })
+    })
+    it('should not delete booking is id is not provided', (done)=>{
+        chai
+        .request(app)
+        .delete(`/api/v1/bookings/a`)
+        .set('Authorization', userToken)
+        .end((error, response)=>{
+            expect(response).to.have.status(422);
+            expect(response.body).to.have.property('status').eql(422);
+            expect(response.body).to.have.property('error');
+            done();
+        })
+    })
+    it('should not delete booking if id does not exist', (done)=>{
+        chai
+        .request(app)
+        .delete(`/api/v1/bookings/100000000`)
+        .set('Authorization', userToken)
+        .end((error, response)=>{
+            expect(response).to.have.status(404);
+            expect(response.body).to.have.property('status').eql(404);
+            expect(response.body).to.have.property('error');
+            done();
+        })
+    })
 })

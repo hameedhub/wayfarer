@@ -44,5 +44,21 @@ class BookingsValidation {
         }
         next();
     }
+    static deleteBookings(request, response, next){
+        const { bookingId } = request.params;
+        if(Object.keys(request.body).length>0){
+            return response.status(400).json({
+                status: 400,
+                error: 'Only bookingId required, and should be passed as a params'
+            })
+        }
+        if(!isIntegar.test(bookingId)){
+            return response.status(422).json({
+                status: 422,
+                error: 'Invalid input, booking ID should be a number'
+            })
+        }
+        next();
+    }
 }
 export default BookingsValidation;
