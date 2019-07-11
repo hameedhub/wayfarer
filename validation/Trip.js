@@ -95,6 +95,22 @@ class TripValidation {
         }
     next();
     }
+    static tripCancellation(request, response, next){
+
+        if(Object.keys(request.body).length>0){
+            return response.status(400).json({
+                status: 400,
+                error: 'Only tripId parameter is required'
+            })
+        }
+        if(!isIntegar.test(request.params.tripId)){
+            return response.status(422).json({
+                status: 422,
+                error: 'Invalid input, Trip ID can only be a number'
+            })
+        }
+        next();
+    }
 }
 
 export default TripValidation;

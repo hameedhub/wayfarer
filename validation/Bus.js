@@ -1,5 +1,5 @@
 import { isEmpty, isIntegar } from '../validation/Authentication';
-import { isString } from '../validation/validateTrip';
+import { isString } from '../validation/Trip';
 
 
 class BusValidation{
