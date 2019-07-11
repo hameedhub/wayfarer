@@ -4,7 +4,8 @@ import app from '../app';
 chai.use(chaiHttp);
 
 let token;
-let userToken
+let userToken;
+let trip_id;
 describe('Test Create Trip', ()=>{
     before(done=>{
         const adminLogin={
@@ -47,6 +48,7 @@ describe('Test Create Trip', ()=>{
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
+            trip_id = response.body.data.trip_id;
            expect(response.body).to.have.status(201);
            expect(response.body).to.have.property('data');
            expect(response.body).to.have.property('status');
@@ -341,7 +343,7 @@ describe('Test Create Trip', ()=>{
             expect(response.body).to.have.property('status').eql(200);
         })
     })
-    it('should not login user if token is not available', ()=>{
+    it('should not allow user if token is not available', ()=>{
         chai
         .request(app)
         .get('/api/v1/trips')
@@ -351,5 +353,49 @@ describe('Test Create Trip', ()=>{
             expect(response.body).to.have.property('status').eql(401);
         })
     })
-    
+    it('should allow admin to cancel trip', ()=>{
+        chai
+        .request(app)
+        .patch(`/api/v1/trips/${trip_id}`)
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(200);
+            expect(response.body).to.have.property('data');
+            expect(response.body).to.have.property('status').eql(200);
+        })
+    })
+    it('should not allow admin to cancel trip if body parameter is provided', ()=>{
+        chai
+        .request(app)
+        .patch(`/api/v1/trips/${trip_id}`)
+        .set('Authorization', token)
+        .send({id: 1})
+        .end((error, response)=>{
+            expect(response).to.have.status(400);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(400);
+        })
+    })
+    it('should not allow admin to cancel trip id is not vaild', ()=>{
+        chai
+        .request(app)
+        .patch(`/api/v1/trips/a`)
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(422);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(422);
+        })
+    })
+    it('should not allow admin to cancel trip if trip id does not exist', ()=>{
+        chai
+        .request(app)
+        .patch(`/api/v1/trips/100000`)
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(404);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(404);
+        })
+    })
 })

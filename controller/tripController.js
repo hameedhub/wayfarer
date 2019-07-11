@@ -35,6 +35,29 @@ static viewTrip(request, response){
         data: trips
     })
 }
+static cancelTrip(request, response){
+     /**
+     * @description Admin cancel trip
+     * @param { Object } request 
+     * @param { Object } response
+     * @return { JSON } return  
+     */
+    const trip = trips.find(trip=> trip.trip_id === +request.params.tripId);
+    if(!trip){
+        return response.status(404).json({
+            status: 404,
+            error: 'Trip not found'
+        })
+    }
+    trip.status = 'cancel';
+     return response.status(200).json({
+         status: 200,
+         data: {
+             trip,
+             message: 'Trip cancelled successfully'
+         }
+     })
+}
 
 }
 
