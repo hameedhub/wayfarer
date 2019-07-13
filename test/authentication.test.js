@@ -1,16 +1,24 @@
+import "@babel/polyfill";
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
+import Query from '../model/Query';
 chai.use(chaiHttp);
-
+const user = new Query('users');
+const trip = new Query('trips');
 
 describe('Signup controller test', ()=>{
+    after(async (done)=>{
+      user.delete([`email='test01@mail.com'`]);
+      trip.delete([`trip_date='12-12-2050'`]);
+      done();
+    })
         it('should be able to register user when all the parameters are provided', done => {
             const userData = {
                 first_name: "Hameed",
                 last_name: "Rasheed",
                 password: "Password123#",
-                email:"test123@mail.com"
+                email:"test01@mail.com"
             };
             chai
               .request(app)
@@ -238,180 +246,178 @@ describe('Signup controller test', ()=>{
                 done();
               });
           });
-    })
-describe('Login Authentication', ()=>{
-  it('should be able to login user', (done)=>{
-    const userData ={ 
-      email: 'test@mail.com',
-      password: 'Password123#'
-    }
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(200);
-      expect(response.body).to.have.property('data');
-      expect(response.body).to.have.property('token');
-      expect(response.status).to.equal(200);
-      done();
-    })
-  })
-  it('should not login user email is not correct', (done)=>{
-    const userData ={
-      email: 'tester@mail.com',
-      password: 'Password123#'
-    };
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(401);
-      expect(response.body).to.have.property('error');
-      expect(response.status).to.equal(401);
-      done();
-    })
-  })
-  it('should not login user password is not correct', (done)=>{
-    const userData ={
-      email: 'test@mail.com',
-      password: 'Incorrect123#'
-    };
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(401);
-      expect(response.body).to.have.property('error');
-      expect(response.status).to.equal(401);
-      done();
-    })
-  })
-  it('should not login user details are not provided', (done)=>{
-    const userData ={};
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(400);
-      expect(response.body).to.have.property('error');
-      expect(response.status).to.equal(400);
-      done();
-    })
-  })
-  it('should not login user if details are more than required', (done)=>{
-    const userData ={
-      email: 'test@mail.com',
-      password: 'Password123#',
-      status: 'good'
-    };
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(400);
-      expect(response.body).to.have.property('error');
-      expect(response.status).to.equal(400);
-      done();
-    })
-  })
-  it('should not login user if email is not provided',(done)=>{
-    const userData ={
-      password: 'Password123#'
-    }
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(400);
-      expect(response.body).to.have.property('error');
-      expect(response.status).to.equal(400);
-      done();
-    })
-  })
-  it('should not login user if email is empty',(done)=>{
-    const userData ={
-      email: '',
-      password: 'Password123#'
-    }
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(400);
-      expect(response.body).to.have.property('error');
-      expect(response.status).to.equal(400);
-      done();
-    })
-  })
-  it('should not login user if email is not valid',(done)=>{
-    const userData ={
-      email: 'test.com',
-      password: 'Password123#'
-    }
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(422);
-      expect(response.body).to.have.property('error');
-      expect(response.status).to.equal(422);
-      done();
-    })
-  })
-  it('should not login user if password is not provided',(done)=>{
-    const userData ={
-      email: 'test@mail.com'
-    }
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(400);
-      expect(response.body).to.have.property('error');
-      expect(response.status).to.equal(400);
-      done();
-    })
-  })
-  it('should not login user if password is not empty',(done)=>{
-    const userData ={
-      email: 'test@mail.com',
-      password: ''
-    }
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(400);
-      expect(response.body).to.have.property('error');
-      expect(response.status).to.equal(400);
-      done();
-    })
-  })
-  it('should not login user if password is not vaild',(done)=>{
-    const userData ={
-      email: 'test@mail.com',
-      password: 'password'
-    }
-    chai
-    .request(app)
-    .post('/api/v1/login')
-    .send(userData)
-    .end((error, response)=>{
-      expect(response.body).to.have.property('status').eql(422);
-      expect(response.body).to.have.property('error');
-      expect(response.status).to.equal(422);
-      done();
-    })
-  })
 
-});
+          it('should be able to login user', (done)=>{
+            const userData ={ 
+              email: 'test@mail.com',
+              password: 'Password123#'
+            }
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(200);
+              expect(response.body).to.have.property('data');
+              expect(response.body).to.have.property('token');
+              expect(response.status).to.equal(200);
+              done();
+            })
+          })
+          it('should not login user email is not correct', (done)=>{
+            const userData ={
+              email: 'incorrect@mail.com',
+              password: 'Password123#'
+            };
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(401);
+              expect(response.body).to.have.property('error');
+              expect(response.status).to.equal(401);
+              done();
+            })
+          })
+          it('should not login user password is not correct', (done)=>{
+            const userData ={
+              email: 'test@mail.com',
+              password: 'Incorrect123#'
+            };
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(401);
+              expect(response.body).to.have.property('error');
+              expect(response.status).to.equal(401);
+              done();
+            })
+          })
+          it('should not login user details are not provided', (done)=>{
+            const userData ={};
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(400);
+              expect(response.body).to.have.property('error');
+              expect(response.status).to.equal(400);
+              done();
+            })
+          })
+          it('should not login user if details are more than required', (done)=>{
+            const userData ={
+              email: 'test@mail.com',
+              password: 'Password123#',
+              status: 'good'
+            };
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(400);
+              expect(response.body).to.have.property('error');
+              expect(response.status).to.equal(400);
+              done();
+            })
+          })
+          it('should not login user if email is not provided',(done)=>{
+            const userData ={
+              password: 'Password123#'
+            }
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(400);
+              expect(response.body).to.have.property('error');
+              expect(response.status).to.equal(400);
+              done();
+            })
+          })
+          it('should not login user if email is empty',(done)=>{
+            const userData ={
+              email: '',
+              password: 'Password123#'
+            }
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(400);
+              expect(response.body).to.have.property('error');
+              expect(response.status).to.equal(400);
+              done();
+            })
+          })
+          it('should not login user if email is not valid',(done)=>{
+            const userData ={
+              email: 'test.com',
+              password: 'Password123#'
+            }
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(422);
+              expect(response.body).to.have.property('error');
+              expect(response.status).to.equal(422);
+              done();
+            })
+          })
+          it('should not login user if password is not provided',(done)=>{
+            const userData ={
+              email: 'test@mail.com'
+            }
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(400);
+              expect(response.body).to.have.property('error');
+              expect(response.status).to.equal(400);
+              done();
+            })
+          })
+          it('should not login user if password is not empty',(done)=>{
+            const userData ={
+              email: 'test@mail.com',
+              password: ''
+            }
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(400);
+              expect(response.body).to.have.property('error');
+              expect(response.status).to.equal(400);
+              done();
+            })
+          })
+          it('should not login user if password is not vaild',(done)=>{
+            const userData ={
+              email: 'test@mail.com',
+              password: 'password'
+            }
+            chai
+            .request(app)
+            .post('/api/v1/login')
+            .send(userData)
+            .end((error, response)=>{
+              expect(response.body).to.have.property('status').eql(422);
+              expect(response.body).to.have.property('error');
+              expect(response.status).to.equal(422);
+              done();
+            })
+          })
+})

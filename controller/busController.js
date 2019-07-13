@@ -1,27 +1,60 @@
-import bus from '../database/persistentData/bus.json';
-class Bus {
+import Query from '../model/Query';
 
-    static createBus(request, response){
-      const { number_plate, manufacturer, model, year, capacity } = request.body;
-      const data ={
-          id: bus.length+1,
-          number_plate,
-          manufacturer,
-          model,
-          year,
-          capacity
-      };
-      bus.push(data);
-      return response.status(201).json({
-        status: 201,
-        data
-      })
+const bus = new Query('buses');
+/**
+ * @description Bus profiling 
+ */
+class Bus {
+   /**
+     * @description creation of bus profile
+     * @param { Object } request 
+     * @param { Object } response
+     * @return { JSON } return  
+     */
+    static async createBus(request, response){
+      try {
+          const { number_plate, manufacturer, model, year, capacity } = request.body;
+          const busData ={
+              number_plate,
+              manufacturer,
+              model,
+              year,
+              capacity
+          };
+          const data = await bus.insert(Object.keys(busData),[`'${number_plate}','${manufacturer}','${model}','${year}','${capacity}'`]);
+          return response.status(201).json({
+            status: 201,
+            data,
+            message: 'Bus profile was created successfully'
+          })
+             
+        } catch (error) {
+            return response.status(503).json({
+              status: 503,
+              error: 'Something went wrong, service not available'
+            })
+        }
     }
-    static getBuses(request, response){
-      return response.status(200).json({
-        status: 200,
-        data: bus
-      })
+    /**
+     * @description get buses with details
+     * @param { Object } request 
+     * @param { Object } response
+     * @return { JSON } return  
+     */
+    static async getBuses(request, response){
+      try {
+          const data = await bus.selectAll();
+          return response.status(200).json({
+            status: 200,
+            data
+          })
+
+      } catch (error) {
+        return response.status(503).json({
+          status: 503,
+          error: 'Something went wrong, service not available'
+        })
+      }
     }
 }
 

@@ -1,7 +1,10 @@
+import "@babel/polyfill";
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
+
 chai.use(chaiHttp);
+
 
 let token;
 let userToken;
@@ -32,14 +35,13 @@ describe('Test Create Trip', ()=>{
            userToken = `Bearer ${response.body.token}`;
             done();
         })
-    
     })
     it('should be able to create a trip', (done)=>{
         const tripData ={
-            bus_id: "342",
+            bus_id: "1",
             origin:  "Lagos",
             destination: "Abuja-Usa",
-            trip_date: "3-12-2019",
+            trip_date: "12-12-2050",
             fare:"21.0"
         }
         chai
@@ -48,7 +50,7 @@ describe('Test Create Trip', ()=>{
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
-            trip_id = response.body.data.trip_id;
+            trip_id = response.body.data[0].id;
            expect(response.body).to.have.status(201);
            expect(response.body).to.have.property('data');
            expect(response.body).to.have.property('status');
@@ -173,7 +175,7 @@ describe('Test Create Trip', ()=>{
     })
     it('should not create trip if origin is empty', (done)=>{
         const tripData ={
-            bus_id: "123",
+            bus_id: "1",
             origin:  "",
             destination: "Abuja-Usa",
             trip_date: "3-12-2019",
@@ -193,7 +195,7 @@ describe('Test Create Trip', ()=>{
     })
     it('should not create trip if origin is contain invalid character', (done)=>{
         const tripData ={
-            bus_id: "11",
+            bus_id: "1",
             origin:  "Lagos$",
             destination: "Abuja-Usa",
             trip_date: "3-12-2019",
@@ -213,7 +215,7 @@ describe('Test Create Trip', ()=>{
     })
     it('should not create trip if destination is empty', (done)=>{
         const tripData ={
-            bus_id: "132",
+            bus_id: "1",
             origin:  "Lagos",
             destination: "",
             trip_date: "3-12-2019",
@@ -233,7 +235,7 @@ describe('Test Create Trip', ()=>{
     })
     it('should not create trip if destination is not valid', (done)=>{
         const tripData ={
-            bus_id: "12",
+            bus_id: "1",
             origin:  "Lagos",
             destination: "Abuja-Jabi$",
             trip_date: "3-12-2019",
@@ -253,7 +255,7 @@ describe('Test Create Trip', ()=>{
     }),
     it('should not create trip if trip date is empty', (done)=>{
         const tripData ={
-            bus_id: "12",
+            bus_id: "1",
             origin:  "Lagos",
             destination: "Abuja-Usa",
             trip_date: "",

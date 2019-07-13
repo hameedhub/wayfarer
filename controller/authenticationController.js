@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import Encryptor from '../helper/encryptor';
-import users from '../database/persistentData/users.json';
+import Query from '../model/Query';
+
+const users = new Query('users');
 /**
  *@description Authentication of user details on registering and login
  */
@@ -10,46 +12,85 @@ class Authentication {
      * @description User signup for route
      * @param { Object } request 
      * @param { Object } response
-     * @return { Object } return  
+     * @return { JSON } return  
      */
 
-    static signup (request, response){
-        const {email, password, first_name, last_name, isAdmin } = request.body;
-        const encrytedPassword = Encryptor.encrypt(password);
-        const data ={
-            id :users.length +1,
-            email, password: encrytedPassword, first_name, last_name, is_admin: false
-        }
-            users.push(data);
-        const token = jwt.sign(data, process.env.JWT_SECRET);
-        return response.status(201).json({
-            status: 201,
-            data,
+    static async signup (request, response){
+        try {
+            const {email, password, first_name, last_name } = request.body;
+            const checkEmail = await users.select(['email'], [`email='${email}'`]);
+            if(checkEmail.length>0){
+                return response.status(409).json({
+                    status: 409,
+                    error: 'Email already in use'
+                })
+            }
+            const encrytedPassword = Encryptor.encrypt(password);
+            const userData ={ 
+                first_name,
+                last_name, 
+                email, 
+                password: encrytedPassword, 
+                is_admin: false 
+            };
+            const result = await users.insert(Object.keys(userData),[`'${first_name}', '${last_name}', '${email}', '${encrytedPassword}', 'false'`]);
+            const data = { 
+                id: result[0].id,
+                first_name: result[0].first_name,
+                last_name: result[0].last_name,
+                email: result[0].email, 
+                is_admin: result[0].is_admin
+            };
+            const token = jwt.sign(data, process.env.JWT_SECRET);
+            return response.status(201).json({
+                status: 201,
+                data,
                 token
-        })
+            })
+        } catch (error) {
+            return response.status(503).json({
+                status: 503,
+                error: 'Something went wrong, service not available'
+            });
+        }
+       
     }
-    static login (request, response){
-        const checkUser = users.find((user)=> user.email === request.body.email);
-        if(!checkUser){
-            return response.status(401).json({
-                status: 401,
-                error: 'Incorrect email address'
+     /**
+     * @description login user 
+     * @param { Object } request 
+     * @param { Object } response
+     * @return { JSON } return  
+     */
+    static async login (request, response){
+        try {
+            const checkUser = await users.select(['*'],`email='${request.body.email}'`);
+            if(!checkUser[0]){
+                return response.status(401).json({
+                    status: 401,
+                    error: 'Incorrect email address'
+                })
+            }
+            const checkPassword = Encryptor.compare(request.body.password, checkUser[0].password);
+            if(!checkPassword){
+                return response.status(401).json({
+                    status: 401,
+                    error: "Incorrect Password"
+                })
+            }
+            const { password, ...data } = checkUser[0];
+            const token = jwt.sign(data, process.env.JWT_SECRET);
+            return response.status(200).json({
+                status: 200,
+                data,
+                token
             })
+        } catch (error) {
+            return response.status(503).json({
+                status: 503,
+                error: 'Something went wrong, service not available'
+            });
         }
-        const checkPassowrd = Encryptor.compare(request.body.password, checkUser.password);
-        if(!checkPassowrd){
-            return response.status(401).json({
-                status: 401,
-                error: "Incorrect Password"
-            })
-        }
-        const { password, ...data } = checkUser;
-        const token = jwt.sign(checkUser, process.env.JWT_SECRET);
-        return response.status(200).json({
-            status: 200,
-            data,
-            token
-        })
+        
 
     }
 

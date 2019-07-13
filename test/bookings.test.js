@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
@@ -46,7 +47,7 @@ describe('Test Bookings', ()=>{
         .send(bookingData)
         .set('Authorization', userToken)
         .end((error, response)=>{
-            bookingId = response.body.data.booking_id;
+            bookingId = response.body.data[0].id;
            expect(response).to.have.status(201);
            expect(response.body).to.have.property('data');
            expect(response.body).to.have.property('status').eql(201);
