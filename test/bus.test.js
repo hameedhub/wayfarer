@@ -2,6 +2,7 @@ import "@babel/polyfill";
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
+const URL = '/bus';
 chai.use(chaiHttp);
 
 let token;
@@ -12,7 +13,7 @@ describe('Test Bus Route', ()=>{
             password: "Password123#"
         }
         chai.request(app)
-        .post('/api/v1/login')
+        .post('/auth/signin')
         .send(adminLogin)
         .end((error, response)=>{
            token = `Bearer ${response.body.token}`;
@@ -29,7 +30,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -49,7 +50,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .end((error, response)=>{
            expect(response).to.have.status(401);
@@ -62,7 +63,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -84,7 +85,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -104,7 +105,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -124,7 +125,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -144,7 +145,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -164,7 +165,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -184,7 +185,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -204,7 +205,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -224,7 +225,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -244,7 +245,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -264,7 +265,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -284,7 +285,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -304,7 +305,7 @@ describe('Test Bus Route', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/bus')
+        .post(URL)
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -317,7 +318,7 @@ describe('Test Bus Route', ()=>{
     it('should be able to get buses provided an admin is logged in', (done)=>{
         chai
         .request(app)
-        .get('/api/v1/buses')
+        .get(URL)
         .set('Authorization', token)
         .end((error, response)=>{
             expect(response).to.have.status(200);

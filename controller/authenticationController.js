@@ -17,7 +17,7 @@ class Authentication {
 
     static async signup (request, response){
         try {
-            const {email, password, first_name, last_name } = request.body;
+            const {email, password, first_name, last_name, is_admin } = request.body;
             const checkEmail = await users.select(['email'], [`email='${email}'`]);
             if(checkEmail.length>0){
                 return response.status(409).json({
@@ -31,9 +31,9 @@ class Authentication {
                 last_name, 
                 email, 
                 password: encrytedPassword, 
-                is_admin: false 
+                is_admin 
             };
-            const result = await users.insert(Object.keys(userData),[`'${first_name}', '${last_name}', '${email}', '${encrytedPassword}', 'false'`]);
+            const result = await users.insert(Object.keys(userData),[`'${first_name}', '${last_name}', '${email}', '${encrytedPassword}', '${is_admin}'`]);
             const data = { 
                 id: result[0].id,
                 first_name: result[0].first_name,

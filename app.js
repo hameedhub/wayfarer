@@ -15,10 +15,10 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/api/v1', authenticationRouter);
-app.use('/api/v1/', tripRouter);
-app.use('/api/v1/', busRouter);
-app.use('/api/v1/', bookingsRouter);
+app.use('/auth', authenticationRouter);
+app.use('/trips', tripRouter);
+app.use('/bus', busRouter);
+app.use('/bookings', bookingsRouter);
 
 app.get('/', (request, response)=>{
   response.status(200).json({
