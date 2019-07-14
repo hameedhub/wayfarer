@@ -15,7 +15,7 @@ const isValidEmail = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,10})
 const isIntegar= /^(?:[1-9]\d*|\d)$/; 
 const isValidAlphabet= /^[a-zA-Z ]*$/;
 const isValidName = /^[a-zA-Z]{3,15}$/;
-const isValidPassword = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+const isValidPassword = /^(?=.*?[a-z]).{4,}$/;
 const whiteSpace =/\s/g;
 const isBoolean = /^(true|false|1|0)$/;
 
@@ -46,7 +46,7 @@ class ValidateAuthentication {
         if (isEmpty(first_name) && isEmpty(last_name) && isEmpty(email) && isEmpty(password)) {
             return response.status(400).json({
               status: 400,
-              error: 'First Name, Last Name, Email and Password field are required'
+              error: 'First Name, Last Name, Email, Password and is_admin field are required'
             });
         }
         if(isEmpty(first_name)){
@@ -94,7 +94,7 @@ class ValidateAuthentication {
         if(!isValidPassword.test(password)){
             return response.status(422).json({
                 status: 422,
-                error: 'Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character'
+                error: 'Password should contain atleast 4 characters'
             })
         }
         if(isEmpty(email)){
@@ -165,7 +165,7 @@ class ValidateAuthentication {
         if(!isValidPassword.test(password)){
             return response.status(422).json({
                 status: 422,
-                error: 'Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character'
+                error: 'Password should contain atleast 4 characters'
             })
         }
         next();

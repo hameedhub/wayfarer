@@ -200,7 +200,7 @@ describe('Signup controller test', ()=>{
                 done();
               });
           });
-          it('should not register user if password is not 8 character long and does not contain 1 uppercase, 1 lower case and 1 symbol', done => {
+          it('should not register user if password is not 4 character long', done => {
             const userData = {
                 first_name: "Hameed",
                 last_name: "Rasheed",
@@ -216,7 +216,6 @@ describe('Signup controller test', ()=>{
                 expect(response.body).to.have.property('status').eql(422);
                 expect(response.body).to.have.property('error');
                 expect(response.status).to.equal(422);
-                expect(response.body).to.have.property('error').eql('Password should contain atleast 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol or character');
                 done();
               });
           });
@@ -455,7 +454,7 @@ describe('Signup controller test', ()=>{
           it('should not login user if password is not vaild',(done)=>{
             const userData ={
               email: 'test@mail.com',
-              password: 'password'
+              password: 'abc'
             }
             chai
             .request(app)
