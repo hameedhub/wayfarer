@@ -273,4 +273,72 @@ describe('Test Bookings', ()=>{
             done();
         })
     })
+    it('should allow the user to change seat after booking', (done)=>{
+        chai
+        .request(app)
+        .patch('/api/v1/bookings/1')
+        .set('Authorization', userToken)
+        .send({seat_number: 2})
+        .end((error, response)=>{
+            expect(response).to.have.status(200)
+            expect(response.body).to.have.property('status').eql(200);
+            expect(response.body).to.have.property('data');
+            expect(response.body).to.have.property('message');
+            done();
+        })
+    })
+    it('should not change user seat if trip_id is not number', (done)=>{
+        chai
+        .request(app)
+        .patch('/api/v1/bookings/a')
+        .set('Authorization', userToken)
+        .send({seat_number: 2})
+        .end((error, response)=>{
+            expect(response).to.have.status(422)
+            expect(response.body).to.have.property('status').eql(422);
+            expect(response.body).to.have.property('error');
+            done();
+        })
+    })
+    it('should not change user seat if invaild parameter are passed', (done)=>{
+        chai
+        .request(app)
+        .patch('/api/v1/bookings/1')
+        .set('Authorization', userToken)
+        .send({seat_number: 2, address: 'Abuja'})
+        .end((error, response)=>{
+            expect(response).to.have.status(400)
+            expect(response.body).to.have.property('status').eql(400);
+            expect(response.body).to.have.property('error');
+            done();
+        })
+    })
+    it('should not change user seat if seat_number is empty', (done)=>{
+        chai
+        .request(app)
+        .patch('/api/v1/bookings/1')
+        .set('Authorization', userToken)
+        .send({seat_number:""})
+        .end((error, response)=>{
+            expect(response).to.have.status(400)
+            expect(response.body).to.have.property('status').eql(400);
+            expect(response.body).to.have.property('error');
+            done();
+        })
+    })
+    it('should not change user seat if seat_number is not number', (done)=>{
+        chai
+        .request(app)
+        .patch('/api/v1/bookings/1')
+        .set('Authorization', userToken)
+        .send({seat_number:"a"})
+        .end((error, response)=>{
+            expect(response).to.have.status(422)
+            expect(response.body).to.have.property('status').eql(422);
+            expect(response.body).to.have.property('error');
+            done();
+        })
+    })
+    
+
 })

@@ -60,5 +60,34 @@ class BookingsValidation {
         }
         next();
     }
+    static changeSeat(request, response, next){
+        const { tripId } = request.params;
+        const { seat_number } = request.body;
+        if(!isIntegar.test(tripId)){
+            return response.status(422).json({
+                status: 422,
+                error: 'Invalid input, Trip ID should be a number'
+            })
+        }
+        if(Object.keys(request.body).length>1){
+            return response.status(400).json({
+                status: 400,
+                error: 'Only seat number required'
+            })
+        }
+        if(isEmpty(seat_number)){
+            return response.status(400).json({
+                status: 400,
+                error: 'Seat number is required'
+            })
+        }
+        if(!isIntegar.test(seat_number)){
+            return response.status(422).json({
+                status: 422,
+                error: 'Invalid input, Seat number should be a number'
+            })
+        }
+        next();
+    }
 }
 export default BookingsValidation;

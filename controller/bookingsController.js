@@ -1,4 +1,5 @@
 import Query from '../model/Query';
+import { reporters } from 'mocha';
 
 const bookings = new Query('bookings');
 const trips = new Query('trips');
@@ -110,6 +111,34 @@ class Bookings{
                 status: 503,
                 error: 'Something went wrong, service not available'
             });  
+        }
+    }
+    static async changeSeat(request, response){
+        try {
+            const checkTrip = await trips.select(['*'],[`id=${request.params.tripId} AND status='active'`]);
+            if(!checkTrip[0]){
+                return response.status(404).json({
+                    status: 404,
+                    error: 'Trip ID does not match any of the available trip'
+                })
+            }
+            const data = await bookings.update([`seat_number='${request.body.seat_number}'`], [`trip_id='${request.params.tripId}' AND user_id='${request.userData.id}'`]);
+            if(!data[0]){
+                return response.status(404).json({
+                    status: 404,
+                    error: `You didn't book for this trip. Hence, you can't change seat`
+                })
+            }
+            return response.status(200).json({
+                status: 200,
+                data,
+                message: 'Your seat has been successfully changed'
+            })
+        } catch (error) {
+            return response.status(503).json({
+                status: 503,
+                error: 'Something went wrong, service not available'
+            })
         }
     }
 }
