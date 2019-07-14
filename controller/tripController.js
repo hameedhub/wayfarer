@@ -85,6 +85,27 @@ class Trip{
             })
         }
     }
+    static async filterTripByDestination(request, response){
+        try {
+            const data = await trips.select(['*'], [`destination='${request.params.destination}'`]);
+            if(!data[0]){
+                return response.status(404).json({
+                    status: 404,
+                    error: `No available trip for ${request.params.destination} destination`
+                })
+            }
+            return response.status(200).json({
+                status: 200,
+                data,
+                message: `Trips available for ${request.params.destination} destination`
+            })
+        } catch (error) {
+            return response.status(503).json({
+                status: 503,
+                error: 'Something went wrong, service not available'
+            })
+        }
+    }
 
 }
 

@@ -9,5 +9,6 @@ const router = Router();
 router.post('/trip', Authentication.checkToken, tokenAccess.adminAccess, validation.createTripValidation, Controller.createTrip);
 router.get('/trips', Authentication.checkToken, Controller.viewTrip);
 router.patch('/trips/:tripId', Authentication.checkToken, tokenAccess.adminAccess, validation.tripCancellation, Controller.cancelTrip);
+router.get('/trips/destination/:destination', Authentication.checkToken, validation.filterTripByDestination, Controller.filterTripByDestination);
 
 export default router;

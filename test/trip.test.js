@@ -400,4 +400,41 @@ describe('Test Create Trip', ()=>{
             expect(response.body).to.have.property('status').eql(404);
         })
     })
+    it('should filter trip by destination', (done)=>{
+        chai
+        .request(app)
+        .get(`/api/v1/trips/destination/Abuja-Usa`)
+        .set('Authorization', userToken)
+        .end((error, response)=>{
+            expect(response).to.have.status(200);
+            expect(response.body).to.have.property('data');
+            expect(response.body).to.have.property('status').eql(200);
+            done();
+        })
+    })
+    it('should not filter trip if body parameter is passed', (done)=>{
+        chai
+        .request(app)
+        .get(`/api/v1/trips/destination/Abuja-Usa`)
+        .send({destination:"Abuja-Usa"})
+        .set('Authorization', userToken)
+        .end((error, response)=>{
+            expect(response).to.have.status(400);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(400);
+            done()
+        })
+    })
+    it('should not filter trip if destination is not vaild', (done)=>{
+        chai
+        .request(app)
+        .get(`/api/v1/trips/destination/$Abuja-Usa`)
+        .set('Authorization', userToken)
+        .end((error, response)=>{
+            expect(response).to.have.status(422);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(422);
+            done()
+        })
+    })
 })

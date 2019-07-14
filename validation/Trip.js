@@ -51,7 +51,7 @@ class TripValidation {
         if(!isString.test(origin)){
             return response.status(422).json({
                 status: 422,
-                error: 'Origin should contain valid character and should be more than 2'
+                error: 'Origin should contain at least 2 character without invalid symbols'
             })
         }
         // validate destination
@@ -64,7 +64,7 @@ class TripValidation {
         if(!isString.test(destination)){
             return response.status(422).json({
                 status: 422,
-                error: 'Destination should contain valid character and should be more than 2'
+                error: 'Destination should contain at least 2 character without invalid symbols'
             })
         }
         // validate date
@@ -107,6 +107,22 @@ class TripValidation {
             return response.status(422).json({
                 status: 422,
                 error: 'Invalid input, Trip ID can only be a number'
+            })
+        }
+        next();
+    }
+    static filterTripByDestination(request, response, next){
+        const { destination } = request.params;
+        if(Object.keys(request.body).length>0){
+            return response.status(400).json({
+                status: 400,
+                error: 'Only Destination parameter is required'
+            })
+        }
+        if(!isString.test(destination)){
+            return response.status(422).json({
+                status: 422,
+                error: 'Destination should contain at least 2 character without invalid symbols'
             })
         }
         next();
