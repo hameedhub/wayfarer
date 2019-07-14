@@ -8,6 +8,7 @@ const router = Router();
 
 router.post('/bookings', Authentication.checkToken, Access.clientAccess, Validation.book, Controller.book);
 router.get('/bookings', Authentication.checkToken, Controller.bookings);
-router.delete('/bookings/:bookingId', Authentication.checkToken, Access.clientAccess, Validation.deleteBookings, Controller.deleteBookings)
+router.delete('/bookings/:bookingId', Authentication.checkToken, Access.clientAccess, Validation.deleteBookings, Controller.deleteBookings);
+router.patch('/bookings/:tripId', Authentication.checkToken, Access.clientAccess, Validation.changeSeat, Controller.changeSeat);
 
 export default router;
