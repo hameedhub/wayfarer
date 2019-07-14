@@ -36,8 +36,8 @@ class ValidateAuthentication {
          * @param { Object } response contains response sent to the user
          * @return { json }
          */
-        const { first_name, last_name, email, password} = request.body;
-        if (Object.keys(request.body).length >4) {
+        const { first_name, last_name, email, password, is_admin} = request.body;
+        if (Object.keys(request.body).length >5) {
             return response.status(400).json({
               status: 400,
               error: 'Only First Name, Last Name, Email and Password is required'
@@ -107,6 +107,18 @@ class ValidateAuthentication {
             return response.status(422).json({
                 status: 422,
                 error: 'Invalid email address'
+            })
+        }
+        if(isEmpty(is_admin)){
+            return response.status(400).json({
+                status: 400,
+                error: 'is_admin is required'
+            })
+        }
+        if(!isBoolean.test(is_admin)){
+            return response.status(422).json({
+                status: 422,
+                error: 'Invalid input, is_admin can only be true or false'
             })
         }
         next();

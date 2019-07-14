@@ -4,7 +4,7 @@ import chaiHttp from 'chai-http';
 import app from '../app';
 
 chai.use(chaiHttp);
-
+const URL = '/trips';
 
 let token;
 let userToken;
@@ -16,7 +16,7 @@ describe('Test Create Trip', ()=>{
             password: "Password123#"
         }
         chai.request(app)
-        .post('/api/v1/login')
+        .post('/auth/signin')
         .send(adminLogin)
         .end((error, response)=>{
            token = `Bearer ${response.body.token}`;
@@ -29,7 +29,7 @@ describe('Test Create Trip', ()=>{
             password: 'Password123#'
         }
         chai.request(app)
-        .post('/api/v1/login')
+        .post('/auth/signin')
         .send(userLogin)
         .end((error, response)=>{
            userToken = `Bearer ${response.body.token}`;
@@ -46,7 +46,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -67,7 +67,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .end((error, response)=>{
            expect(response.body).to.have.status(401);
@@ -86,7 +86,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', userToken)
         .end((error, response)=>{
@@ -107,7 +107,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -123,7 +123,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -143,7 +143,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -163,7 +163,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -183,7 +183,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -203,7 +203,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -223,7 +223,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -243,7 +243,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -263,7 +263,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -283,7 +283,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -303,7 +303,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -323,7 +323,7 @@ describe('Test Create Trip', ()=>{
         }
         chai
         .request(app)
-        .post('/api/v1/trip')
+        .post(URL)
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
@@ -337,7 +337,7 @@ describe('Test Create Trip', ()=>{
     it('should allow users and admin to view trips with vaild token', ()=>{
         chai
         .request(app)
-        .get('/api/v1/trips')
+        .get(`${URL}`)
         .set('Authorization', token)
         .end((error, response)=>{
             expect(response).to.have.status(200);
@@ -348,7 +348,7 @@ describe('Test Create Trip', ()=>{
     it('should not allow user if token is not available', ()=>{
         chai
         .request(app)
-        .get('/api/v1/trips')
+        .get(`${URL}`)
         .end((error, response)=>{
             expect(response).to.have.status(401);
             expect(response.body).to.have.property('error');
@@ -358,7 +358,7 @@ describe('Test Create Trip', ()=>{
     it('should allow admin to cancel trip', ()=>{
         chai
         .request(app)
-        .patch(`/api/v1/trips/${trip_id}`)
+        .patch(`${URL}/${trip_id}`)
         .set('Authorization', token)
         .end((error, response)=>{
             expect(response).to.have.status(200);
@@ -369,7 +369,7 @@ describe('Test Create Trip', ()=>{
     it('should not allow admin to cancel trip if body parameter is provided', ()=>{
         chai
         .request(app)
-        .patch(`/api/v1/trips/${trip_id}`)
+        .patch(`${URL}/${trip_id}`)
         .set('Authorization', token)
         .send({id: 1})
         .end((error, response)=>{
@@ -381,7 +381,7 @@ describe('Test Create Trip', ()=>{
     it('should not allow admin to cancel trip id is not vaild', ()=>{
         chai
         .request(app)
-        .patch(`/api/v1/trips/a`)
+        .patch(`${URL}/a`)
         .set('Authorization', token)
         .end((error, response)=>{
             expect(response).to.have.status(422);
@@ -392,7 +392,7 @@ describe('Test Create Trip', ()=>{
     it('should not allow admin to cancel trip if trip id does not exist', ()=>{
         chai
         .request(app)
-        .patch(`/api/v1/trips/100000`)
+        .patch(`${URL}/100000`)
         .set('Authorization', token)
         .end((error, response)=>{
             expect(response).to.have.status(404);
@@ -403,7 +403,7 @@ describe('Test Create Trip', ()=>{
     it('should filter trip by destination', (done)=>{
         chai
         .request(app)
-        .get(`/api/v1/trips/destination/Abuja-Usa`)
+        .get(`${URL}/destination/Abuja-Usa`)
         .set('Authorization', userToken)
         .end((error, response)=>{
             expect(response).to.have.status(200);
@@ -415,7 +415,7 @@ describe('Test Create Trip', ()=>{
     it('should not filter trip if body parameter is passed', (done)=>{
         chai
         .request(app)
-        .get(`/api/v1/trips/destination/Abuja-Usa`)
+        .get(`${URL}/destination/Abuja-Usa`)
         .send({destination:"Abuja-Usa"})
         .set('Authorization', userToken)
         .end((error, response)=>{
@@ -428,7 +428,7 @@ describe('Test Create Trip', ()=>{
     it('should not filter trip if destination is not vaild', (done)=>{
         chai
         .request(app)
-        .get(`/api/v1/trips/destination/$Abuja-Usa`)
+        .get(`${URL}/destination/$Abuja-Usa`)
         .set('Authorization', userToken)
         .end((error, response)=>{
             expect(response).to.have.status(422);
@@ -440,7 +440,7 @@ describe('Test Create Trip', ()=>{
     it('should filter trip by origin', (done)=>{
         chai
         .request(app)
-        .get(`/api/v1/trips/origin/Lagos`)
+        .get(`${URL}/origin/Lagos`)
         .set('Authorization', userToken)
         .end((error, response)=>{
             expect(response).to.have.status(200);
@@ -452,7 +452,7 @@ describe('Test Create Trip', ()=>{
     it('should not filter trip by origin if body parameter is passed', (done)=>{
         chai
         .request(app)
-        .get(`/api/v1/trips/origin/Lagos`)
+        .get(`${URL}/origin/Lagos`)
         .send({origin:"Lagos"})
         .set('Authorization', userToken)
         .end((error, response)=>{
@@ -465,7 +465,7 @@ describe('Test Create Trip', ()=>{
     it('should not filter trip if origin is not vaild', (done)=>{
         chai
         .request(app)
-        .get(`/api/v1/trips/origin/$Lagos`)
+        .get(`/trips/origin/$Lagos`)
         .set('Authorization', userToken)
         .end((error, response)=>{
             expect(response).to.have.status(422);

@@ -6,7 +6,7 @@ import Query from '../model/Query';
 chai.use(chaiHttp);
 const user = new Query('users');
 const trip = new Query('trips');
-
+const URL = '/auth';
 describe('Signup controller test', ()=>{
     after(async (done)=>{
       user.delete([`email='test01@mail.com'`]);
@@ -18,11 +18,12 @@ describe('Signup controller test', ()=>{
                 first_name: "Hameed",
                 last_name: "Rasheed",
                 password: "Password123#",
-                email:"test01@mail.com"
+                email:"test01@mail.com",
+                is_admin: false
             };
             chai
               .request(app)
-              .post('/api/v1/signup')
+              .post(`${URL}/signup`)
               .send(userData)
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(201);
@@ -36,7 +37,7 @@ describe('Signup controller test', ()=>{
             const userData = {};
             chai
               .request(app)
-              .post('/api/v1/signup')
+              .post(`${URL}/signup`)
               .send(userData)
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(400);
@@ -51,12 +52,13 @@ describe('Signup controller test', ()=>{
                 last_name: "Rasheed",
                 password: "Password123#",
                 email: "aajd@a.com",
+                is_admin: false,
                 location: "Benin",
                 state: "Edo"
             };
             chai
               .request(app)
-              .post('/api/v1/signup')
+              .post(`${URL}/signup`)
               .send(userData)
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(400);
@@ -70,11 +72,12 @@ describe('Signup controller test', ()=>{
                 first_name: "",
                 last_name: "Rasheed",
                 password: "Password123#",
-                email: "aajd@a.com"
+                email: "aajd@a.com",
+                is_admin: false
             };
             chai
               .request(app)
-              .post('/api/v1/signup')
+              .post(`${URL}/signup`)
               .send(userData)
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(400);
@@ -88,11 +91,12 @@ describe('Signup controller test', ()=>{
                 first_name: "Hameed",
                 last_name: "",
                 password: "Password123#",
-                email: "aajd@a.com"
+                email: "aajd@a.com",
+                is_admin: false
             };
             chai
               .request(app)
-              .post('/api/v1/signup')
+              .post(`${URL}/signup`)
               .send(userData)
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(400);
@@ -106,11 +110,12 @@ describe('Signup controller test', ()=>{
                 first_name: "Hameed1",
                 last_name: "Rasheed",
                 password: "Password123#",
-                email: "aajd@a.com"
+                email: "aajd@a.com",
+                is_admin: false
             };
             chai
             .request(app)
-            .post('/api/v1/signup')
+            .post(`${URL}/signup`)
             .send(userData)
             .end((error, response) => {
               expect(response.body).to.have.property('status').eql(422);
@@ -124,11 +129,12 @@ describe('Signup controller test', ()=>{
                 first_name: "Hameed",
                 last_name: "Rasheed12",
                 password: "Password123#",
-                email: "aajd@a.com"
+                email: "aajd@a.com",
+                is_admin: false
             };
             chai
               .request(app)
-              .post('/api/v1/signup')
+              .post(`${URL}/signup`)
               .send(userData)
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(422);
@@ -142,11 +148,12 @@ describe('Signup controller test', ()=>{
                 first_name: "H",
                 last_name: "Rasheed",
                 password: "Password123#",
-                email: "aajd@a.com"
+                email: "aajd@a.com",
+                is_admin: false
             };
             chai
             .request(app)
-            .post('/api/v1/signup')
+            .post(`${URL}/signup`)
             .send(userData)
             .end((error, response) => {
               expect(response.body).to.have.property('status').eql(422);
@@ -160,11 +167,12 @@ describe('Signup controller test', ()=>{
                 first_name: "Hameed",
                 last_name: "R",
                 password: "Password123#",
-                email: "aajd@a.com"
+                email: "aajd@a.com",
+                is_admin: false
             };
             chai
             .request(app)
-            .post('/api/v1/signup')
+            .post(`${URL}/signup`)
             .send(userData)
             .end((error, response) => {
               expect(response.body).to.have.property('status').eql(422);
@@ -178,11 +186,12 @@ describe('Signup controller test', ()=>{
                 first_name: "Hameed",
                 last_name: "Rasheed",
                 password: "",
-                email: "aajd@a.com"
+                email: "aajd@a.com",
+                is_admin: false
             };
             chai
               .request(app)
-              .post('/api/v1/signup')
+              .post(`${URL}/signup`)
               .send(userData)
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(400);
@@ -196,11 +205,12 @@ describe('Signup controller test', ()=>{
                 first_name: "Hameed",
                 last_name: "Rasheed",
                 password: "abc",
-                email: "aajd@a.com"
+                email: "aajd@a.com",
+                is_admin: false
             };
             chai
               .request(app)
-              .post('/api/v1/signup')
+              .post(`${URL}/signup`)
               .send(userData)
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(422);
@@ -215,11 +225,12 @@ describe('Signup controller test', ()=>{
                 first_name: "Hameed",
                 last_name: "Rasheed",
                 password: "Password123#",
-                email: ""
+                email: "",
+                is_admin: false
             };
             chai
               .request(app)
-              .post('/api/v1/signup')
+              .post(`${URL}/signup`)
               .send(userData)
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(400);
@@ -233,11 +244,12 @@ describe('Signup controller test', ()=>{
                 first_name: "Hameed",
                 last_name: "Rasheed",
                 password: "Password123#",
-                email: "adfjaldsj"
+                email: "adfjaldsj",
+                is_admin: false
             };
             chai
               .request(app)
-              .post('/api/v1/signup')
+              .post(`${URL}/signup`)
               .send(userData)
               .end((error, response) => {
                 expect(response.body).to.have.property('status').eql(422);
@@ -246,7 +258,43 @@ describe('Signup controller test', ()=>{
                 done();
               });
           });
-
+          it('should not register user if is_admin is empty', done => {
+            const userData = {
+                first_name: "Hameed",
+                last_name: "Rasheed",
+                password: "Password123#",
+                email: "test@mail.com",
+            };
+            chai
+              .request(app)
+              .post(`${URL}/signup`)
+              .send(userData)
+              .end((error, response) => {
+                expect(response.body).to.have.property('status').eql(400);
+                expect(response.body).to.have.property('error');
+                expect(response.status).to.equal(400);
+                done();
+              });
+          });
+          it('should not register user if is_admin is not boolean value', done => {
+            const userData = {
+                first_name: "Hameed",
+                last_name: "Rasheed",
+                password: "Password123#",
+                email: "test@mail.com",
+                is_admin: 'good'
+            };
+            chai
+              .request(app)
+              .post(`${URL}/signup`)
+              .send(userData)
+              .end((error, response) => {
+                expect(response.body).to.have.property('status').eql(422);
+                expect(response.body).to.have.property('error');
+                expect(response.status).to.equal(422);
+                done();
+              });
+          });
           it('should be able to login user', (done)=>{
             const userData ={ 
               email: 'test@mail.com',
@@ -254,7 +302,7 @@ describe('Signup controller test', ()=>{
             }
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(200);
@@ -271,7 +319,7 @@ describe('Signup controller test', ()=>{
             };
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(401);
@@ -287,7 +335,7 @@ describe('Signup controller test', ()=>{
             };
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(401);
@@ -300,7 +348,7 @@ describe('Signup controller test', ()=>{
             const userData ={};
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(400);
@@ -317,7 +365,7 @@ describe('Signup controller test', ()=>{
             };
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(400);
@@ -332,7 +380,7 @@ describe('Signup controller test', ()=>{
             }
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(400);
@@ -348,7 +396,7 @@ describe('Signup controller test', ()=>{
             }
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(400);
@@ -364,7 +412,7 @@ describe('Signup controller test', ()=>{
             }
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(422);
@@ -379,7 +427,7 @@ describe('Signup controller test', ()=>{
             }
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(400);
@@ -395,7 +443,7 @@ describe('Signup controller test', ()=>{
             }
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(400);
@@ -411,7 +459,7 @@ describe('Signup controller test', ()=>{
             }
             chai
             .request(app)
-            .post('/api/v1/login')
+            .post(`${URL}/signin`)
             .send(userData)
             .end((error, response)=>{
               expect(response.body).to.have.property('status').eql(422);
