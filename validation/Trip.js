@@ -127,6 +127,21 @@ class TripValidation {
         }
         next();
     }
+    static filterTripByOrigin(request, response, next){
+        if(Object.keys(request.body).length>0){
+            return response.status(400).json({
+                status: 400,
+                error: 'Only origin parameter is required'
+            })
+        }
+        if(!isString.test(request.params.origin)){
+            return response.status(422).json({
+                status: 422,
+                error: 'Origin should contain at least 2 character without invalid symbols'
+            })
+        }
+        next();
+    }
 }
 
 export default TripValidation;

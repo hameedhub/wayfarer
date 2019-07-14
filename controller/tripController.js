@@ -106,6 +106,27 @@ class Trip{
             })
         }
     }
+    static async filterTripByOrigin(request, response){
+        try {
+            const data = await trips.select(['*'], [`origin='${request.params.origin}'`]);
+            if(!data[0]){
+                return response.status(404).json({
+                    status: 404,
+                    error: `No available trip for ${request.params.origin} origin`
+                })
+            }
+            return response.status(200).json({
+                status: 200,
+                data,
+                message: `Trips available for ${request.params.origin} origin`
+            })             
+        } catch (error) {
+            return response.status(503).json({
+                status: 503,
+                error: 'Something went wrong, service not available'
+            })
+        }
+    }
 
 }
 
