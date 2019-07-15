@@ -18,7 +18,7 @@ class Trip{
             const { bus_id, origin, destination, trip_date, fare } = tripData;
             const resultData = await trips.insert(Object.keys(tripData),[`'${bus_id}', '${origin}', '${destination}', '${trip_date}', '${fare}', 'active'`]);
             const data = { ...resultData[0] };
-            console.log(resultData);
+            console.log(response);
             return response.status(201).json({
                 status: 201,
                 data
