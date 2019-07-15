@@ -319,23 +319,23 @@ describe('Signup controller test', ()=>{
               done();
             })
           })
-          it('should not login user if details are more than required', (done)=>{
-            const userData ={
-              email: 'test@mail.com',
-              password: 'Password123#',
-              status: 'good'
-            };
-            chai
-            .request(app)
-            .post(`${URL}/signin`)
-            .send(userData)
-            .end((error, response)=>{
-              expect(response.body).to.have.property('status').eql(400);
-              expect(response.body).to.have.property('error');
-              expect(response.status).to.equal(400);
-              done();
-            })
-          })
+          // it('should not login user if details are more than required', (done)=>{
+          //   const userData ={
+          //     email: 'test@mail.com',
+          //     password: 'Password123#',
+          //     status: 'good'
+          //   };
+          //   chai
+          //   .request(app)
+          //   .post(`${URL}/signin`)
+          //   .send(userData)
+          //   .end((error, response)=>{
+          //     expect(response.body).to.have.property('status').eql(400);
+          //     expect(response.body).to.have.property('error');
+          //     expect(response.status).to.equal(400);
+          //     done();
+          //   })
+          // })
           it('should not login user if email is not provided',(done)=>{
             const userData ={
               password: 'Password123#'

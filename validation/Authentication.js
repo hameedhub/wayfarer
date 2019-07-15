@@ -133,7 +133,7 @@ class ValidateAuthentication {
          */
 
         const { email, password} =request.body;
-        if (Object.keys(request.body).length> 2){
+        if (Object.keys(request.body).length> 5){
             return response.status(400).json({
                 status: 400,
                 error: 'Only provided email and password'
