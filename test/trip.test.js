@@ -96,27 +96,6 @@ describe('Test Create Trip', ()=>{
            done();
         })
     }),
-    it('should not create trip if invalid parameters', (done)=>{
-        const tripData ={
-            bus_id: "342",
-            origin:  "Lagos",
-            destination: "Abuja-Usa",
-            trip_date: "3-12-2019",
-            fare:"21.0",
-            location: "Kastina"
-        }
-        chai
-        .request(app)
-        .post(URL)
-        .send(tripData)
-        .set('Authorization', token)
-        .end((error, response)=>{
-           expect(response.body).to.have.status(400);
-           expect(response.body).to.have.property('error');
-           expect(response.body).to.have.property('status').eql(400);
-           done();
-        })
-    }),
     it('should not create trip if parameter is empty', (done)=>{
         const tripData ={
             
