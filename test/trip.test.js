@@ -50,7 +50,7 @@ describe('Test Create Trip', ()=>{
         .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
-            trip_id = response.body.data[0].id;
+            trip_id = response.body.data.id;
            expect(response.body).to.have.status(201);
            expect(response.body).to.have.property('data');
            expect(response.body).to.have.property('status');
