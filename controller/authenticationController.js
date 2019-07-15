@@ -28,7 +28,7 @@ class Authentication {
             }
             let is_admin;
             if(request.body.is_admin){
-                is_admin = true
+                is_admin = request.body.is_admin
             }else{
                 is_admin = false
             }
