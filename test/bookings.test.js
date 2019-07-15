@@ -18,7 +18,7 @@ describe('Test Bookings', ()=>{
         .post('/auth/signin')
         .send(adminLogin)
         .end((error, response)=>{
-           adminToken = `Bearer ${response.body.token}`;
+           adminToken = `Bearer ${response.body.data.token}`;
             done();
         })
     })
@@ -31,7 +31,7 @@ describe('Test Bookings', ()=>{
         .post('/auth/signin')
         .send(userLogin)
         .end((error, response)=>{
-           userToken = `Bearer ${response.body.token}`;
+           userToken = `Bearer ${response.body.data.token}`;
             done();
         })
     

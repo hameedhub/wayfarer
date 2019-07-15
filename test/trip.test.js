@@ -19,7 +19,7 @@ describe('Test Create Trip', ()=>{
         .post('/auth/signin')
         .send(adminLogin)
         .end((error, response)=>{
-           token = `Bearer ${response.body.token}`;
+           token = `Bearer ${response.body.data.token}`;
             done();
         })
     })
@@ -32,7 +32,7 @@ describe('Test Create Trip', ()=>{
         .post('/auth/signin')
         .send(userLogin)
         .end((error, response)=>{
-           userToken = `Bearer ${response.body.token}`;
+           userToken = `Bearer ${response.body.data.token}`;
             done();
         })
     })

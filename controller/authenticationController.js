@@ -41,18 +41,18 @@ class Authentication {
                 is_admin 
             };
             const result = await users.insert(Object.keys(userData),[`'${first_name}', '${last_name}', '${email}', '${encrytedPassword}', '${is_admin}'`]);
-            const data = { 
+            const dataResult = { 
                 id: result[0].id,
                 first_name: result[0].first_name,
                 last_name: result[0].last_name,
                 email: result[0].email, 
                 is_admin: result[0].is_admin
             };
-            const token = jwt.sign(data, process.env.JWT_SECRET);
+            const token = jwt.sign(dataResult, process.env.JWT_SECRET);
+            const data = { ...dataResult, token};
             return response.status(201).json({
                 status: 201,
-                data,
-                token
+                data
             })
         } catch (error) {
             console.log(error);
@@ -67,26 +67,32 @@ class Authentication {
      */
     static async login (request, response){
         try {
-            const checkUser = await users.select(['*'],`email='${request.body.email}'`);
-            if(!checkUser[0]){
+            const result = await users.select(['*'],`email='${request.body.email}'`);
+            if(!result[0]){
                 return response.status(401).json({
                     status: 401,
                     error: 'Incorrect email address'
                 })
             }
-            const checkPassword = Encryptor.compare(request.body.password, checkUser[0].password);
+            const checkPassword = Encryptor.compare(request.body.password, result[0].password);
             if(!checkPassword){
                 return response.status(401).json({
                     status: 401,
                     error: "Incorrect Password"
                 })
             }
-            const { password, ...data } = checkUser[0];
-            const token = jwt.sign(data, process.env.JWT_SECRET);
+            const dataResult = { 
+                id: result[0].id,
+                first_name: result[0].first_name,
+                last_name: result[0].last_name,
+                email: result[0].email, 
+                is_admin: result[0].is_admin
+            };
+            const token = jwt.sign(dataResult, process.env.JWT_SECRET);
+            const data = { ...dataResult, token};
             return response.status(200).json({
                 status: 200,
-                data,
-                token
+                data
             })
         } catch (error) {
             console.log(error);

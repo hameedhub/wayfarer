@@ -16,7 +16,7 @@ describe('Test Bus Route', ()=>{
         .post('/auth/signin')
         .send(adminLogin)
         .end((error, response)=>{
-           token = `Bearer ${response.body.token}`;
+           token = `Bearer ${response.body.data.token}`;
             done();
         })
     })
