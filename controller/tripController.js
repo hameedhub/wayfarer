@@ -14,11 +14,11 @@ class Trip{
      */
     static async createTrip(request, response){
         try {
-            console.log(request);
             const tripData =  {...request.body, status: 'active'};
             const { bus_id, origin, destination, trip_date, fare } = tripData;
             const resultData = await trips.insert(Object.keys(tripData),[`'${bus_id}', '${origin}', '${destination}', '${trip_date}', '${fare}', 'active'`]);
             const data = { ...resultData[0] };
+            console.log(data);
             return response.status(201).json({
                 status: 201,
                 data
