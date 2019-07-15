@@ -15,14 +15,14 @@ class Trip{
     static async createTrip(request, response){
         try {
             const tripData =  {...request.body, status: 'active'};
-            const checkBus = await bus.select(['*'], `id='${request.body.bus_id}'`);
-            if(!checkBus[0]){
-                return response.status(404).json({
-                    status: 404,
-                    error: `Bus ID not found, no bus profile created with ID ${request.body.bus_id}`
-                })
+            // const checkBus = await bus.select(['*'], `id='${request.body.bus_id}'`);
+            // if(!checkBus[0]){
+            //     return response.status(404).json({
+            //         status: 404,
+            //         error: `Bus ID not found, no bus profile created with ID ${request.body.bus_id}`
+            //     })
 
-            }
+            // }
             const { bus_id, origin, destination, trip_date, fare } = tripData;
             const data = await trips.insert(Object.keys(tripData),[`'${bus_id}', '${origin}', '${destination}', '${trip_date}', '${fare}', 'active'`]);
             return response.status(201).json({
