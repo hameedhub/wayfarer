@@ -109,18 +109,19 @@ class ValidateAuthentication {
                 error: 'Invalid email address'
             })
         }
-        if(isEmpty(is_admin)){
-            return response.status(400).json({
-                status: 400,
-                error: 'is_admin is required'
-            })
-        }
-        if(!isBoolean.test(is_admin)){
-            return response.status(422).json({
-                status: 422,
-                error: 'Invalid input, is_admin can only be true or false'
-            })
-        }
+        // if(isEmpty(is_admin)){
+        //     return response.status(400).json({
+        //         status: 400,
+        //         error: 'is_admin is required'
+        //     })
+        // }
+        
+        // if(!isBoolean.test(is_admin)){
+        //     return response.status(422).json({
+        //         status: 422,
+        //         error: 'Invalid input, is_admin can only be true or false'
+        //     })
+        // }
         next();
     }
     static validateLogin (request, response, next){

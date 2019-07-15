@@ -86,10 +86,9 @@ describe('Signup controller test', ()=>{
                 done();
               });
           });
-          it('should not register user if last name is provided', done => {
+          it('should not register user if last name is not provided', done => {
             const userData = {
                 first_name: "Hameed",
-                last_name: "",
                 password: "Password123#",
                 email: "aajd@a.com",
                 is_admin: false
@@ -257,43 +256,7 @@ describe('Signup controller test', ()=>{
                 done();
               });
           });
-          it('should not register user if is_admin is empty', done => {
-            const userData = {
-                first_name: "Hameed",
-                last_name: "Rasheed",
-                password: "Password123#",
-                email: "test@mail.com",
-            };
-            chai
-              .request(app)
-              .post(`${URL}/signup`)
-              .send(userData)
-              .end((error, response) => {
-                expect(response.body).to.have.property('status').eql(400);
-                expect(response.body).to.have.property('error');
-                expect(response.status).to.equal(400);
-                done();
-              });
-          });
-          it('should not register user if is_admin is not boolean value', done => {
-            const userData = {
-                first_name: "Hameed",
-                last_name: "Rasheed",
-                password: "Password123#",
-                email: "test@mail.com",
-                is_admin: 'good'
-            };
-            chai
-              .request(app)
-              .post(`${URL}/signup`)
-              .send(userData)
-              .end((error, response) => {
-                expect(response.body).to.have.property('status').eql(422);
-                expect(response.body).to.have.property('error');
-                expect(response.status).to.equal(422);
-                done();
-              });
-          });
+          
           it('should be able to login user', (done)=>{
             const userData ={ 
               email: 'test@mail.com',
