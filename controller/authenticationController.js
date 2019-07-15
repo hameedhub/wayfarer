@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import Encryptor from '../helper/encryptor';
 import Query from '../model/Query';
+import { isEmpty } from '../validation/Authentication';
 
 const users = new Query('users');
 /**
@@ -17,13 +18,16 @@ class Authentication {
 
     static async signup (request, response){
         try {
-            const {email, password, first_name, last_name, is_admin } = request.body;
+            let {email, password, first_name, last_name, is_admin } = request.body;
             const checkEmail = await users.select(['email'], [`email='${email}'`]);
             if(checkEmail.length>0){
                 return response.status(409).json({
                     status: 409,
                     error: 'Email already in use'
                 })
+            }
+            if(isEmpty(is_admin)){
+                is_admin = false;
             }
             const encrytedPassword = Encryptor.encrypt(password);
             const userData ={ 
