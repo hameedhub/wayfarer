@@ -18,7 +18,7 @@ class Authentication {
 
     static async signup (request, response){
         try {
-            let {email, password, first_name, last_name, is_admin } = request.body;
+            let {email, password, first_name, last_name } = request.body;
             const checkEmail = await users.select(['email'], [`email='${email}'`]);
             if(checkEmail.length>0){
                 return response.status(409).json({
@@ -26,8 +26,11 @@ class Authentication {
                     error: 'Email already in use'
                 })
             }
-            if(isEmpty(is_admin)){
-                is_admin = false;
+            let is_admin;
+            if(request.body.is_admin){
+                is_admin = true
+            }else{
+                is_admin = false
             }
             const encrytedPassword = Encryptor.encrypt(password);
             const userData ={ 
