@@ -55,10 +55,7 @@ class Authentication {
                 token
             })
         } catch (error) {
-            return response.status(503).json({
-                status: 503,
-                error: 'Something went wrong, service not available'
-            });
+            console.log(error);
         }
        
     }
@@ -92,10 +89,7 @@ class Authentication {
                 token
             })
         } catch (error) {
-            return response.status(503).json({
-                status: 503,
-                error: 'Something went wrong, service not available'
-            });
+            console.log(error);
         }
         
 
