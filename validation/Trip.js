@@ -1,5 +1,5 @@
 import { isEmpty, isIntegar } from './Authentication';
-const isString = /^([a-zA-Z 0-9_\-\.]{2,})$/; // checks if the user input is string value
+const isString = /^([a-zA-Z 0-9_\-\.]{1,})$/; // checks if the user input is string value
 const isValidDate = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
 //isValidDate from J. Meijer stackoverflow
 const isValidFloat = /^-?\d*(\.\d+)?$/; //stackoverflow user - mkedobbs
@@ -74,7 +74,7 @@ class TripValidation {
                 error: 'Trip date is required'
             })
         }
-        if(!isValidDate.test(trip_date)){
+        if(!isString.test(trip_date)){
             return response.status(422).json({
                 status: 422,
                 error: 'Invalid Date(e.g day/month/year )'
