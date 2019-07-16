@@ -21,7 +21,7 @@ class BookingsValidation {
     }
     static deleteBookings(request, response, next){
         const { bookingId } = request.params;
-        if(Object.keys(request.body).length>0){
+        if(Object.keys(request.body).length>5){
             return response.status(400).json({
                 status: 400,
                 error: 'Only bookingId required, and should be passed as a params'

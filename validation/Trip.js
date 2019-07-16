@@ -96,8 +96,8 @@ class TripValidation {
     next();
     }
     static tripCancellation(request, response, next){
-
-        if(Object.keys(request.body).length>0){
+        console.log(request.body);
+        if(Object.keys(request.body).length>5){
             return response.status(400).json({
                 status: 400,
                 error: 'Only tripId parameter is required'
