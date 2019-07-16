@@ -3,6 +3,7 @@ import { reporters } from 'mocha';
 
 const bookings = new Query('bookings');
 const trips = new Query('trips');
+const trip = new Query(`trips inner join buses on buses.id = trips.bus_id`)
 /**
  *@description Bookings of user {book}- to create, {bookings}- to veiw bookings and {deleteBooking}- to delete booking record
  */
@@ -17,17 +18,19 @@ class Bookings{
     static async book (request, response){
         try {
             //check if trip is available 
-            const checkTripID = await trips.select(['*'],[`id='${request.body.trip_id}'`]);
+            const checkTripID = await trip.select(['buses.capacity, *'],[`trips.id='${request.body.trip_id}'`]);
             if(!checkTripID[0]){
                 return response.status(404).json({
                     status: 404,
                     error: 'Trip ID does not match any of the available trip'
                 })
             }
-            let seat_number = 1;
+            let seat_number;
             const { bus_id, trip_date} = checkTripID[0];
             const { id, first_name, last_name, email } = request.userData;
-
+            if(!request.body.seat_number){
+                seat_number = Math.floor(Math.random() * checkTripID[0].capacity) + 1;
+            }
             const data = await bookings.insert(['user_id', 'trip_id', 'bus_id', 'trip_date', 'seat_number', 'first_name', 'last_name', 'email'],
             [`'${id}','${request.body.trip_id}', '${bus_id}','${trip_date}','${seat_number}','${first_name}','${last_name}','${email}'`]);
             return response.status(201).json({

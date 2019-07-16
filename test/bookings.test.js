@@ -46,6 +46,7 @@ describe('Test Bookings', ()=>{
         .send(bookingData)
         .set('Authorization', userToken)
         .end((error, response)=>{
+            console.log(response.body);
             bookingId = response.body.data.id;
            expect(response).to.have.status(201);
            expect(response.body).to.have.property('data');
