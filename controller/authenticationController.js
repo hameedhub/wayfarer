@@ -42,11 +42,11 @@ class Authentication {
             };
             const result = await users.insert(Object.keys(userData),[`'${first_name}', '${last_name}', '${email}', '${encrytedPassword}', '${is_admin}'`]);
             const dataResult = { 
-                id: result[0].id,
-                first_name: result[0].first_name,
-                last_name: result[0].last_name,
-                email: result[0].email, 
-                is_admin: result[0].is_admin
+                id: result.id,
+                first_name: result.first_name,
+                last_name: result.last_name,
+                email: result.email, 
+                is_admin: result.is_admin
             };
             const token = jwt.sign(dataResult, process.env.JWT_SECRET);
             const data = { ...dataResult, token};

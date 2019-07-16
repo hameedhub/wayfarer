@@ -16,28 +16,20 @@ class Bookings{
      */
     static async book (request, response){
         try {
-            const { seat_number, trip_id } = request.body;
             //check if trip is available 
-            const checkTripID = await trips.select(['*'],[`id=${trip_id} AND status='active'`]);
+            const checkTripID = await trips.select(['*'],[`id='${request.body.trip_id}'`]);
             if(!checkTripID[0]){
                 return response.status(404).json({
                     status: 404,
                     error: 'Trip ID does not match any of the available trip'
                 })
             }
+            let seat_number = 1;
             const { bus_id, trip_date} = checkTripID[0];
             const { id, first_name, last_name, email } = request.userData;
-            const bookData = {
-                user_id: id,
-                trip_id,
-                bus_id,
-                trip_date,
-                seat_number,
-                first_name,
-                last_name,
-                email
-            }
-            const data = await bookings.insert(Object.keys(bookData),[`'${id}','${trip_id}', '${bus_id}','${trip_date}','${seat_number}','${first_name}','${last_name}','${email}'`]);
+
+            const data = await bookings.insert(['user_id', 'trip_id', 'bus_id', 'trip_date', 'seat_number', 'first_name', 'last_name', 'email'],
+            [`'${id}','${request.body.trip_id}', '${bus_id}','${trip_date}','${seat_number}','${first_name}','${last_name}','${email}'`]);
             return response.status(201).json({
                 status: 201,
                 data,
@@ -45,10 +37,10 @@ class Bookings{
             })
                 
         } catch (error) {
-            return response.status(503).json({
+             return response.status(503).json({
                 status: 503,
                 error: 'Something went wrong, service not available'
-            });
+            });   
         }
 
     }
@@ -102,9 +94,10 @@ class Bookings{
                     error: 'Booking ID does not exist'
                 })
             }
+            const data = { message: 'Booking was successfully deleted' }
             return response.status(200).json({
                 status: 204,
-                message: 'Booking was successfully deleted'
+                data
             })
         } catch (error) {
             return response.status(503).json({

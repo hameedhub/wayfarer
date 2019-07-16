@@ -15,7 +15,7 @@ class TripValidation {
 
     const {bus_id, origin, destination, trip_date, fare} = request.body;
         //check if input is not more than the required values
-        if(Object.keys(request.body).length > 10){
+        if(Object.keys(request.body).length > 8){
             return response.status(400).json({
                 status: 400,
                 error: 'Only Bus ID, Origin, Destination, Trip Date and Fare is required'
@@ -96,8 +96,7 @@ class TripValidation {
     next();
     }
     static tripCancellation(request, response, next){
-
-        if(Object.keys(request.body).length>0){
+        if(Object.keys(request.body).length>5){
             return response.status(400).json({
                 status: 400,
                 error: 'Only tripId parameter is required'

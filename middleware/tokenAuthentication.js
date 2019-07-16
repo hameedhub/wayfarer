@@ -9,7 +9,7 @@ class Token{
         } catch (error) {
             return response.status(401).json({
                 status: 401,
-                error: 'Authorization failed, Please Login'
+                error: `Authorization failed, Please Login`
             })
             
         }
