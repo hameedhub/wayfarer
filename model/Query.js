@@ -8,7 +8,7 @@ class Query{
        
         try {
             const response = await this.pool.query(`INSERT INTO ${this.table}(${keys}) VALUES(${values}) RETURNING *`);
-            return response.rows;
+            return response.rows[0];
         } catch (error) {
            return error;
         }
