@@ -37,7 +37,10 @@ class Bookings{
             })
                 
         } catch (error) {
-            console.log(error);
+             return response.status(503).json({
+                status: 503,
+                error: 'Something went wrong, service not available'
+            });   
         }
 
     }
@@ -91,9 +94,10 @@ class Bookings{
                     error: 'Booking ID does not exist'
                 })
             }
+            const data = { message: 'Booking was successfully deleted' }
             return response.status(200).json({
                 status: 204,
-                message: 'Booking was successfully deleted'
+                data
             })
         } catch (error) {
             return response.status(503).json({

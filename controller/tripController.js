@@ -57,17 +57,17 @@ class Trip{
      */
     static async cancelTrip(request, response){
         try {
-            const data = await trips.update(`status='cancel'`, [`id='${request.params.tripId}'`]);
-            if(!data[0]){
+            const result = await trips.update(`status='cancel'`, [`id='${request.params.tripId}'`]);
+            if(!result[0]){
                 return response.status(404).json({
                     status: 404,
                     error: 'Trip not found'
                 })
             }
+            const data = { ...result, message: 'Trip cancelled successfully' }
             return response.status(200).json({
                 status: 200,
-                data,
-                message: 'Trip cancelled successfully'
+                data
             })
         } catch (error) {
             return response.status(503).json({
