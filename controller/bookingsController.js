@@ -18,7 +18,9 @@ class Bookings{
     static async book (request, response){
         try {
             //check if trip is available 
+
             const checkTripID = await trip.select(['buses.capacity, *'],[`trips.id='${request.body.trip_id}'`]);
+
             if(!checkTripID[0]){
                 return response.status(404).json({
                     status: 404,
@@ -31,6 +33,7 @@ class Bookings{
             if(!request.body.seat_number){
                 seat_number = Math.floor(Math.random() * checkTripID[0].capacity) + 1;
             }
+
             const data = await bookings.insert(['user_id', 'trip_id', 'bus_id', 'trip_date', 'seat_number', 'first_name', 'last_name', 'email'],
             [`'${id}','${request.body.trip_id}', '${bus_id}','${trip_date}','${seat_number}','${first_name}','${last_name}','${email}'`]);
             return response.status(201).json({
