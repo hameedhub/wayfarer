@@ -16,8 +16,11 @@ class Bookings{
      */
     static async book (request, response){
         try {
-            console.log(request.body);
-            const { seat_number, trip_id } = request.body;
+            
+            let { seat_number, trip_id } = request.body;
+            if(!seat_number){
+                seat_number =1;
+            }
             //check if trip is available 
             const checkTripID = await trips.select(['*'],[`id=${trip_id}'`]);
             if(!checkTripID[0]){
