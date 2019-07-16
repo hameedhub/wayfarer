@@ -18,7 +18,9 @@ class Bookings{
     static async book (request, response){
         try {
             //check if trip is available 
+
             const checkTripID = await trip.select(['buses.capacity, *'],[`trips.id='${request.body.trip_id}'`]);
+
             if(!checkTripID[0]){
                 return response.status(404).json({
                     status: 404,
