@@ -10,7 +10,7 @@ const URL = '/auth';
 describe('Signup controller test', ()=>{
     after(async (done)=>{
       user.delete([`email='test01@mail.com'`]);
-      trip.delete([`trip_date='12-12-2050'`]);
+      trip.delete([`trip_date='2019-07-23T09:23:43.112Z'`]);
       done();
     })
         it('should be able to register user when all the parameters are provided', done => {
