@@ -16,19 +16,16 @@ class Bookings{
      */
     static async book (request, response){
         try {
-            
-            let { seat_number, trip_id } = request.body;
-            if(!seat_number){
-                seat_number =1;
-            }
+            console.log(response);
             //check if trip is available 
-            const checkTripID = await trips.select(['*'],[`id=${trip_id}'`]);
+            const checkTripID = await trips.select(['*'],[`id=${request.body.trip_id}'`]);
             if(!checkTripID[0]){
                 return response.status(404).json({
                     status: 404,
                     error: 'Trip ID does not match any of the available trip'
                 })
             }
+            let seat_number = 1;
             const { bus_id, trip_date} = checkTripID[0];
             const { id, first_name, last_name, email } = request.userData;
             const bookData = {

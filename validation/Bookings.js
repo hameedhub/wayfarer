@@ -3,14 +3,9 @@ import { isEmpty, isIntegar }  from './Authentication';
 class BookingsValidation {
     static book(request, response, next){
         console.log(request.body);
+        console.log(response);
         const { trip_id } = request.body;
         //validation
-        if(Object.keys(request.body).length > 2){
-            return response.status(400).json({
-                status: 400,
-                error: 'Only seat number and trip id is required'
-            })
-        }
         // validate trip ID
         if(isEmpty(trip_id)){
             return response.status(400).json({
