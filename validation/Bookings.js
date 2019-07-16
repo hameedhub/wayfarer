@@ -2,10 +2,9 @@ import { isEmpty, isIntegar }  from './Authentication';
 
 class BookingsValidation {
     static book(request, response, next){
-        console.log(request);
         const { seat_number, trip_id } = request.body;
         //validation
-        if(Object.keys(request.body).length > 2){
+        if(Object.keys(request.body).length > 6){
             return response.status(400).json({
                 status: 400,
                 error: 'Only seat number and trip id is required'
