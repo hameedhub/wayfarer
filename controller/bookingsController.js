@@ -16,7 +16,6 @@ class Bookings{
      */
     static async book (request, response){
         try {
-            console.log(request.body.trip_id);
             //check if trip is available 
             const checkTripID = await trips.select(['*'],[`id='${request.body.trip_id}'`]);
             if(!checkTripID[0]){
@@ -25,7 +24,6 @@ class Bookings{
                     error: 'Trip ID does not match any of the available trip'
                 })
             }
-            console.log(checkTripID);
             let seat_number = 1;
             const { bus_id, trip_date} = checkTripID[0];
             const { id, first_name, last_name, email } = request.userData;
@@ -40,6 +38,7 @@ class Bookings{
                 email
             }
             const data = await bookings.insert(Object.keys(bookData),[`'${id}','${trip_id}', '${bus_id}','${trip_date}','${seat_number}','${first_name}','${last_name}','${email}'`]);
+            console.log(data);
             return response.status(201).json({
                 status: 201,
                 data,
@@ -47,10 +46,7 @@ class Bookings{
             })
                 
         } catch (error) {
-            return response.status(503).json({
-                status: 503,
-                error: 'Something went wrong, service not available'
-            });
+            console.log(error);
         }
 
     }
