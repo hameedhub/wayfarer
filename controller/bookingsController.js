@@ -16,7 +16,7 @@ class Bookings{
      */
     static async book (request, response){
         try {
-            console.log(response);
+            console.log(request.body.trip_id);
             //check if trip is available 
             const checkTripID = await trips.select(['*'],[`id=${request.body.trip_id}'`]);
             if(!checkTripID[0]){
@@ -25,6 +25,7 @@ class Bookings{
                     error: 'Trip ID does not match any of the available trip'
                 })
             }
+            console.log(checkTripID);
             let seat_number = 1;
             const { bus_id, trip_date} = checkTripID[0];
             const { id, first_name, last_name, email } = request.userData;
