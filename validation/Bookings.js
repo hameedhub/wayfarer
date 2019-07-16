@@ -2,6 +2,7 @@ import { isEmpty, isIntegar }  from './Authentication';
 
 class BookingsValidation {
     static book(request, response, next){
+        console.log(request);
         const { seat_number, trip_id } = request.body;
         //validation
         if(Object.keys(request.body).length > 2){
