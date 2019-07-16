@@ -18,7 +18,7 @@ class Bookings{
         try {
             console.log(request.body.trip_id);
             //check if trip is available 
-            const checkTripID = await trips.select(['*'],[`id=${request.body.trip_id}'`]);
+            const checkTripID = await trips.select(['*'],[`id='${request.body.trip_id}'`]);
             if(!checkTripID[0]){
                 return response.status(404).json({
                     status: 404,
