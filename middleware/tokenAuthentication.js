@@ -7,10 +7,11 @@ class Token{
             request.userData = decoded; 
             next();
         } catch (error) {
-            return response.status(401).json({
-                status: 401,
-                error: 'Authorization failed, Please Login'
-            })
+            console.log(error);
+            // return response.status(401).json({
+            //     status: 401,
+            //     error: `Authorization failed, Please Login`
+            // })
             
         }
     }
