@@ -2,8 +2,6 @@ import { isEmpty, isIntegar }  from './Authentication';
 
 class BookingsValidation {
     static book(request, response, next){
-        console.log(request.body);
-        console.log(response);
         const { trip_id } = request.body;
         //validation
         // validate trip ID

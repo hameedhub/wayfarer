@@ -27,9 +27,9 @@ class Bookings{
             let seat_number = 1;
             const { bus_id, trip_date} = checkTripID[0];
             const { id, first_name, last_name, email } = request.userData;
+
             const data = await bookings.insert(['user_id', 'trip_id', 'bus_id', 'trip_date', 'seat_number', 'first_name', 'last_name', 'email'],
-            [`'${id}','${trip_id}', '${bus_id}','${trip_date}','${seat_number}','${first_name}','${last_name}','${email}'`]);
-            console.log(data);
+            [`'${id}','${request.body.trip_id}', '${bus_id}','${trip_date}','${seat_number}','${first_name}','${last_name}','${email}'`]);
             return response.status(201).json({
                 status: 201,
                 data,
