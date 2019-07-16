@@ -38,7 +38,6 @@ describe('Test Bookings', ()=>{
     })
     it('should be able to book a trip', (done)=>{
         const bookingData ={
-            seat_number: 2,
             trip_id: 1
         }
         chai
@@ -99,58 +98,6 @@ describe('Test Bookings', ()=>{
            expect(response.body).to.have.status(400);
            expect(response.body).to.have.property('error');
            expect(response.body).to.have.property('status').eql(400);
-           done();
-        })
-    })
-    it('should not book if invalid parameters are given', (done)=>{
-        const bookingData ={
-            seat_number: 2,
-            trip_id: 1,
-            bus_locaiton: "Lagos"
-        }
-        chai
-        .request(app)
-        .post(URL)
-        .send(bookingData)
-        .set('Authorization', userToken)
-        .end((error, response)=>{
-           expect(response).to.have.status(400);
-           expect(response.body).to.have.property('error');
-           expect(response.body).to.have.property('status').eql(400);
-           done();
-        })
-    })
-    it('should not book if seat number is empty', (done)=>{
-        const bookingData ={
-            seat_number: "",
-            trip_id: 1
-        }
-        chai
-        .request(app)
-        .post(URL)
-        .send(bookingData)
-        .set('Authorization', userToken)
-        .end((error, response)=>{
-           expect(response).to.have.status(400);
-           expect(response.body).to.have.property('error');
-           expect(response.body).to.have.property('status').eql(400);
-           done();
-        })
-    })
-    it('should not book if seat number is invalid', (done)=>{
-        const bookingData ={
-            seat_number: "a2",
-            trip_id: 1
-        }
-        chai
-        .request(app)
-        .post(URL)
-        .send(bookingData)
-        .set('Authorization', userToken)
-        .end((error, response)=>{
-           expect(response).to.have.status(422);
-           expect(response.body).to.have.property('error');
-           expect(response.body).to.have.property('status').eql(422);
            done();
         })
     })
@@ -220,20 +167,7 @@ describe('Test Bookings', ()=>{
         .end((error, response)=>{
             expect(response).to.have.status(200);
             expect(response.body).to.have.property('status').eql(204);
-            expect(response.body).to.have.property('message');
-            done();
-        })
-    })
-    it('should delete booking if body parameter is passed', (done)=>{
-        chai
-        .request(app)
-        .delete(`${URL}/${bookingId}`)
-        .set('Authorization', userToken)
-        .send({id: 1})
-        .end((error, response)=>{
-            expect(response).to.have.status(400);
-            expect(response.body).to.have.property('status').eql(400);
-            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('data');
             done();
         })
     })

@@ -379,22 +379,11 @@ describe('Test Create Trip', ()=>{
             expect(response.body).to.have.property('status').eql(404);
         })
     })
-    it('should filter trip by destination', (done)=>{
-        chai
-        .request(app)
-        .get(`${URL}/destination/Abuja-Usa`)
-        .set('Authorization', userToken)
-        .end((error, response)=>{
-            expect(response).to.have.status(200);
-            expect(response.body).to.have.property('data');
-            expect(response.body).to.have.property('status').eql(200);
-            done();
-        })
-    })
+    
     it('should not filter trip if body parameter is passed', (done)=>{
         chai
         .request(app)
-        .get(`${URL}/destination/Abuja-Usa`)
+        .get(`${URL}/destination/Abuja`)
         .send({destination:"Abuja-Usa"})
         .set('Authorization', userToken)
         .end((error, response)=>{
@@ -416,18 +405,18 @@ describe('Test Create Trip', ()=>{
             done()
         })
     })
-    it('should filter trip by origin', (done)=>{
-        chai
-        .request(app)
-        .get(`${URL}/origin/Lagos`)
-        .set('Authorization', userToken)
-        .end((error, response)=>{
-            expect(response).to.have.status(200);
-            expect(response.body).to.have.property('data');
-            expect(response.body).to.have.property('status').eql(200);
-            done();
-        })
-    })
+    // it('should filter trip by origin', (done)=>{
+    //     chai
+    //     .request(app)
+    //     .get(`${URL}/origin/Lagos`)
+    //     .set('Authorization', userToken)
+    //     .end((error, response)=>{
+    //         expect(response).to.have.status(200);
+    //         expect(response.body).to.have.property('data');
+    //         expect(response.body).to.have.property('status').eql(200);
+    //         done();
+    //     })
+    // })
     it('should not filter trip by origin if body parameter is passed', (done)=>{
         chai
         .request(app)
