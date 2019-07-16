@@ -5,13 +5,13 @@ class Token{
            const token = request.headers.authorization.split(' ')[1];
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             request.userData = decoded; 
+            console.log(request.userData);
             next();
         } catch (error) {
-            console.log(error);
-            // return response.status(401).json({
-            //     status: 401,
-            //     error: `Authorization failed, Please Login`
-            // })
+            return response.status(401).json({
+                status: 401,
+                error: `Authorization failed, Please Login`
+            })
             
         }
     }
