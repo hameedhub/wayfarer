@@ -70,13 +70,19 @@ $ git push heroku master
 The application endpoints include:
 - `POST https://hameed-wayfarer.herokuapp.com/auth/signup`
 - `POST https://hameed-wayfarer.herokuapp.com/auth/signin`
-- `POST https://hameed-wayfarer.herokuapp.com/bus`
 - `POST https://hameed-wayfarer.herokuapp.com/trips`
 - `GET  https://hameed-wayfarer.herokuapp.com/trips`
 - `POST https://hameed-wayfarer.herokuapp.com/bookings`
 - `GET  https://hameed-wayfarer.herokuapp.com/bookings`
 - `PATCH https://hameed-wayfarer.herokuapp.com/trips/:tripId`
 - `DELETE https://hameed-wayfarer.herokuapp.com/bookings/bookingId`
+
+Additional endpoints
+- `PATCH https://hameed-wayfarer.herokuapp.com/bookings/bookingId`
+- `GET https://hameed-wayfarer.herokuapp.com/trips/destination/:destination`
+- `GET https://hameed-wayfarer.herokuapp.com/trips/origin/:origin`
+- `POST https://hameed-wayfarer.herokuapp.com/bus`
+- `GET https://hameed-wayfarer.herokuapp.com/bus`
 
 
 ## Configuration / API Endpoints
@@ -158,7 +164,13 @@ On success response
 {
   “status” : Integer ,
   “data” : {
-  “id” : Integar ,
+  “id” : Integar,
+  “bus_id” : Integar,
+  “origin” : String,
+  “destination” : String,
+  “trip_date” : Date,
+  “fare” : Float,
+  “status” : String,
   }
 }
 ```
@@ -170,8 +182,299 @@ Error response
 } 
 ```
 
+### View Trips
+#### POST /trips
 
+Required fields : none
 
+On success response
+```shell
+{
+  “status” : Integer ,
+  “data” : [
+            {
+        “id” : Integar,
+        “bus_id” : Integar,
+        “origin” : String,
+        “destination” : String,
+        “trip_date” : Date,
+        “fare” : Float,
+        “status” : String,
+        }
+  ]
+}
+```
+Error response
+```shell
+{
+    “status” : error status code ,
+    “error” : “relevant-error-message”
+} 
+```
+### Create Booking
+#### POST /bookings
+
+Required fields :
+trip_id: `Integer`   
+seat_number: `'Integer` (optional)
+  
+
+On success response
+```shell
+{
+  “status” : Integer ,
+  “data” : {
+  “id” : Integar,
+  “user_id” : Integar,
+  “trip_id” : Integer,
+  “bus_id” : Integer,
+  “trip_date” : Date,
+  “seat_number” : Integer,
+  “first_name” : String,
+  “last_name” : String,
+  “email” : String,
+  }
+}
+```
+Error response
+```shell
+{
+    “status” : error status code ,
+    “error” : “relevant-error-message”
+} 
+```
+### View Booking
+#### GET /bookings
+
+Required fields :none
+  
+
+On success response
+```shell
+{
+  “status” : Integer ,
+  “data” : [
+      {
+        “id” : Integar,
+        “user_id” : Integar,
+        “trip_id” : Integer,
+        “bus_id” : Integer,
+        “trip_date” : Date,
+        “seat_number” : Integer,
+        “first_name” : String,
+        “last_name” : String,
+        “email” : String,
+        }
+  ]
+}
+```
+Error response
+```shell
+{
+    “status” : error status code ,
+    “error” : “relevant-error-message”
+} 
+```
+
+### Change Trip Status
+#### PATCH /trips/<tripId>
+
+Required fields :
+trip_id: `Integer`  
+
+On success response
+```shell
+{
+  “status” : Integer ,
+  “data” : {
+  “id” : Integar,
+  “bus_id” : Integar,
+  “origin” : String,
+  “destination” : String,
+  “trip_date” : Date,
+  “fare” : Float,
+  “status” : String,
+  }
+}
+```
+Error response
+```shell
+{
+    “status” : error status code ,
+    “error” : “relevant-error-message”
+} 
+```
+### Delete Booking
+#### DELETE /bookings/<bookingId>
+
+Required fields : none  
+
+On success response
+```shell
+{
+  “status” : Integer ,
+  “data” : {
+  “message” : String,
+  }
+}
+```
+Error response
+```shell
+{
+    “status” : error status code ,
+    “error” : “relevant-error-message”
+} 
+```
+### Change Seat number
+#### POST /bookings/<seat_number>
+
+Required fields :  
+seat_number: `'Integer`
+  
+
+On success response
+```shell
+{
+  “status” : Integer ,
+  “data” : {
+  “id” : Integar,
+  “user_id” : Integar,
+  “trip_id” : Integer,
+  “bus_id” : Integer,
+  “trip_date” : Date,
+  “seat_number” : Integer,
+  “first_name” : String,
+  “last_name” : String,
+  “email” : String,
+  }
+}
+```
+Error response
+```shell
+{
+    “status” : error status code ,
+    “error” : “relevant-error-message”
+} 
+```
+### View Trips by Destination
+#### GET /trips/destination/:destination
+
+Required fields : none
+
+On success response
+```shell
+{
+  “status” : Integer ,
+  “data” : [
+            {
+        “id” : Integar,
+        “bus_id” : Integar,
+        “origin” : String,
+        “destination” : String,
+        “trip_date” : Date,
+        “fare” : Float,
+        “status” : String,
+        }
+  ]
+}
+```
+Error response
+```shell
+{
+    “status” : error status code ,
+    “error” : “relevant-error-message”
+} 
+```
+### View Trips by Origin
+#### GET /trips/origin/:origin
+
+Required fields : none
+
+On success response
+```shell
+{
+  “status” : Integer ,
+  “data” : [
+            {
+        “id” : Integar,
+        “bus_id” : Integar,
+        “origin” : String,
+        “destination” : String,
+        “trip_date” : Date,
+        “fare” : Float,
+        “status” : String,
+        }
+  ]
+}
+```
+Error response
+```shell
+{
+    “status” : error status code ,
+    “error” : “relevant-error-message”
+} 
+```
+
+### Create Bus
+#### POST /bus
+
+Required fields :
+number_plate: `String`  
+manufacturer: `'String`
+model: `'String`
+year: `'String`
+capacity: `'Integer`
+
+On success response
+```shell
+{
+  “status” : Integer ,
+  “data” : {
+  “id” : Integer,
+  “number_plate” : String,
+  “manufacturer” : String,
+  “model” : String,
+  “year” : Integer,
+  “capacity” : Integer
+  }
+}
+```
+Error response
+```shell
+{
+    “status” : error status code ,
+    “error” : “relevant-error-message”
+} 
+```
+
+### View Bus
+#### GET /bus
+
+Required fields : none
+
+On success response
+```shell
+{
+  “status” : Integer ,
+  “data” : [
+      {
+    “id” : Integer,
+    “number_plate” : String,
+    “manufacturer” : String,
+    “model” : String,
+    “year” : Integer,
+    “capacity” : Integer
+    }
+  ]
+}
+```
+Error response
+```shell
+{
+    “status” : error status code ,
+    “error” : “relevant-error-message”
+} 
+```
 ## Contributing
 
 If you'd like to contribute, please fork the repository and make a feature
@@ -180,7 +483,8 @@ branch. I accept all forms of feedback. Thanks!
 The code style guide is eslint airbnb
 
 ## Links
-
+Heroku - https://hameed-wayfarer.herokuapp.com
+Postman Documentation - https://documenter.getpostman.com/view/7378427/SVSLoT5Z
 
 ## Licensing
 
