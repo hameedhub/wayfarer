@@ -55,7 +55,10 @@ class Authentication {
                 data
             })
         } catch (error) {
-            console.log(error);
+            return response.status(503).json({
+                status: 503,
+                error: 'Something went wrong, service not available'
+            });  
         }
        
     }
@@ -95,7 +98,10 @@ class Authentication {
                 data
             })
         } catch (error) {
-            console.log(error);
+            return response.status(503).json({
+                status: 503,
+                error: 'Something went wrong, service not available'
+            });  
         }
         
 

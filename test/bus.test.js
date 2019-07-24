@@ -2,12 +2,13 @@ import "@babel/polyfill";
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
-const URL = '/bus';
+const URL = '/buses';
 chai.use(chaiHttp);
+
 
 let token;
 describe('Test Bus Route', ()=>{
-    before(done=>{
+    before( done=>{
         const adminLogin={
             email: "admin@mail.com",
             password: "Password123#"
@@ -19,7 +20,8 @@ describe('Test Bus Route', ()=>{
            token = `Bearer ${response.body.data.token}`;
             done();
         })
-    })
+    });
+    
     it('should be able to create a bus', (done)=>{
         const data ={
             number_plate: "123-1A",
@@ -34,6 +36,7 @@ describe('Test Bus Route', ()=>{
         .send(data)
         .set('Authorization', token)
         .end((error, response)=>{
+            console.log(response.body);
            expect(response.body).to.have.status(201);
            expect(response.body).to.have.property('data');
            expect(response.body).to.have.property('status');

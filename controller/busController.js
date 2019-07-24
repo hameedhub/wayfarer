@@ -21,6 +21,14 @@ class Bus {
               year,
               capacity
           };
+          // check if bus plate number already exist
+          const checkBusPlateNumber = await bus.select(['number_plate'], `number_plate ='${number_plate}'`);
+          if(checkBusPlateNumber[0]){
+            return response.status(409).json({
+              status: 409,
+              error: `Bus profile already exist with plate number ${number_plate}`
+            })
+          }
           const data = await bus.insert(Object.keys(busData),[`'${number_plate}','${manufacturer}','${model}','${year}','${capacity}'`]);
           return response.status(201).json({
             status: 201,
