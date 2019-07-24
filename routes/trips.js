@@ -8,8 +8,6 @@ const router = Router();
 
 router.post('/', Authentication.checkToken, tokenAccess.adminAccess, validation.createTripValidation, Controller.createTrip);
 router.get('/', Authentication.checkToken, Controller.viewTrip);
-router.patch('/:tripId', Authentication.checkToken, tokenAccess.adminAccess, validation.tripCancellation, Controller.cancelTrip);
-router.get('/destination/:destination', Authentication.checkToken, validation.filterTripByDestination, Controller.filterTripByDestination);
-router.get('/origin/:origin', Authentication.checkToken, validation.filterTripByOrigin, Controller.filterTripByOrigin);
+router.patch('/:tripId', Authentication.checkToken, tokenAccess.adminAccess, validation.tripEdit, Controller.editTrip);
 
 export default router;

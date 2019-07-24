@@ -1,5 +1,6 @@
 import { isEmpty, isIntegar } from '../validation/Authentication';
 import { isString } from '../validation/Trip';
+const isValidYear = /^([0-9]{4,})$/;
 
 
 class BusValidation{
@@ -62,6 +63,12 @@ class BusValidation{
             return response.status(400).json({
                 status: 400,
                 error: 'Year is required'
+            })
+        }
+        if(!isValidYear.test(year)){
+            return response.status(422).json({
+                status: 422,
+                error: 'Invalid year'
             })
         }
         if(!isIntegar.test(year)){

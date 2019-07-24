@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/auth', authenticationRouter);
 app.use('/trips', tripRouter);
-app.use('/bus', busRouter);
+app.use('/buses', busRouter);
 app.use('/bookings', bookingsRouter);
 
 app.get('/', (request, response)=>{

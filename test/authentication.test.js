@@ -5,12 +5,13 @@ import app from '../app';
 import Query from '../model/Query';
 chai.use(chaiHttp);
 const user = new Query('users');
-const trip = new Query('trips');
+const bus = new Query('buses');
 const URL = '/auth';
 describe('Signup controller test', ()=>{
     after(async (done)=>{
       user.delete([`email='test01@mail.com'`]);
-      trip.delete([`trip_date='2019-07-23T09:23:43.112Z'`]);
+      user.delete([`email='test02@mail.com'`]);
+      bus.delete([`number_plate='123-1A'`]);
       done();
     })
         it('should be able to register user when all the parameters are provided', done => {
@@ -20,6 +21,25 @@ describe('Signup controller test', ()=>{
                 password: "Password123#",
                 email:"test01@mail.com",
                 is_admin: false
+            };
+            chai
+              .request(app)
+              .post(`${URL}/signup`)
+              .send(userData)
+              .end((error, response) => {
+                expect(response.body).to.have.property('status').eql(201);
+                expect(response.body).to.have.property('data');
+                expect(response.body.data).to.have.property('token');
+                expect(response.status).to.equal(201);
+                done();
+              });
+          });
+          it('should be able to register user without is_admin given', done => {
+            const userData = {
+                first_name: "Hameed",
+                last_name: "Rasheed",
+                password: "Password123#",
+                email:"test02@mail.com"
             };
             chai
               .request(app)

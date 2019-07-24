@@ -2,6 +2,8 @@ import "@babel/polyfill";
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
+import Query from '../model/Query';
+const trip = new Query('trips');
 
 chai.use(chaiHttp);
 const URL = '/trips';
@@ -9,7 +11,13 @@ const URL = '/trips';
 let token;
 let userToken;
 let trip_id;
+let destination;
+let origin;
 describe('Test Create Trip', ()=>{
+    after(async (done)=>{
+        trip.delete([`id='${trip_id}'`]);
+        done();
+      })
     before(done=>{
         const adminLogin={
             email: "admin@mail.com",
@@ -51,9 +59,33 @@ describe('Test Create Trip', ()=>{
         .set('Authorization', token)
         .end((error, response)=>{
             trip_id = response.body.data.id;
+            destination = response.body.data.destination;
+            origin = response.body.data.origin;
            expect(response.body).to.have.status(201);
            expect(response.body).to.have.property('data');
            expect(response.body).to.have.property('status');
+           done();
+        })
+    }),
+    it('should not create trip body parameter is more than 6', (done)=>{
+        const tripData ={
+            bus_id: "342",
+            origin:  "Lagos",
+            destination: "Abuja-Usa",
+            trip_date: "2019-07-23T09:23:43.112Z",
+            fare:"21.0",
+            location: "Kaduna",
+            time: "9am"
+        }
+        chai
+        .request(app)
+        .post(URL)
+        .send(tripData)
+        .set('Authorization', token)
+        .end((error, response)=>{
+           expect(response.body).to.have.status(400);
+           expect(response.body).to.have.property('error');
+           expect(response.body).to.have.property('status').eql(400);
            done();
         })
     }),
@@ -324,7 +356,7 @@ describe('Test Create Trip', ()=>{
             expect(response.body).to.have.property('status').eql(200);
         })
     })
-    it('should not allow user if token is not available', ()=>{
+    it('should not allow user if token is not available', (done)=>{
         chai
         .request(app)
         .get(`${URL}`)
@@ -332,114 +364,196 @@ describe('Test Create Trip', ()=>{
             expect(response).to.have.status(401);
             expect(response.body).to.have.property('error');
             expect(response.body).to.have.property('status').eql(401);
+            done();
         })
     })
-    it('should allow admin to cancel trip', ()=>{
+    it('should be able to filter trip by destination', (done)=>{
         chai
         .request(app)
-        .patch(`${URL}/${trip_id}`)
+        .get(`${URL}?destination=${destination}`)
         .set('Authorization', token)
         .end((error, response)=>{
             expect(response).to.have.status(200);
             expect(response.body).to.have.property('data');
             expect(response.body).to.have.property('status').eql(200);
+            done();
         })
     })
-    it('should not allow admin to cancel trip if body parameter is provided', ()=>{
+
+    it('should be able to filter trip by origin', (done)=>{
+        chai
+        .request(app)
+        .get(`${URL}?origin=${origin}`)
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(200);
+            expect(response.body).to.have.property('data');
+            expect(response.body).to.have.property('status').eql(200);
+            done();
+        })
+    })
+    // test for edit trip
+    it('should allow admin to edit trip', (done)=>{
+        const tripData ={
+            bus_id: "1",
+            origin:  "Lagos",
+            destination: "Abuja",
+            trip_date: "10/10/2019",
+            fare:"5000"
+        }
         chai
         .request(app)
         .patch(`${URL}/${trip_id}`)
+        .send(tripData)
         .set('Authorization', token)
-        .send({id: 1})
+        .end((error, response)=>{
+            expect(response).to.have.status(200);
+            expect(response.body).to.have.property('data');
+            expect(response.body).to.have.property('status').eql(200);
+            done();
+        })
+    })
+    it('should allow admin to edit trip', (done)=>{
+        const tripData ={
+            bus_id: "1a",
+            origin:  "Lagos",
+            destination: "Abuja",
+            trip_date: "10/10/2019",
+            fare:"5000"
+        }
+        chai
+        .request(app)
+        .patch(`${URL}/${trip_id}`)
+        .send(tripData)
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(422);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(422);
+            done();
+        })
+    })
+    it('should not allow body parameter more than 6', (done)=>{
+        const tripData ={
+            bus_id: "1",
+            origin:  "Lagos",
+            destination: "Abuja",
+            trip_date: "10/10/2019",
+            fare:"5000",
+            location: "Ilorin",
+            time: "9am"
+        }
+        chai
+        .request(app)
+        .patch(`${URL}/${trip_id}`)
+        .send(tripData)
+        .set('Authorization', token)
         .end((error, response)=>{
             expect(response).to.have.status(400);
             expect(response.body).to.have.property('error');
             expect(response.body).to.have.property('status').eql(400);
+            done();
         })
     })
-    it('should not allow admin to cancel trip id is not vaild', ()=>{
+    it('should not allow invalid origin', (done)=>{
+        const tripData ={
+            bus_id: "1",
+            origin:  "Lagos$",
+            destination: "Abuja",
+            trip_date: "10/10/2019",
+            fare:"5000"
+        }
+        chai
+        .request(app)
+        .patch(`${URL}/${trip_id}`)
+        .send(tripData)
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(422);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(422);
+            done();
+        })
+    })
+    it('should not allow invalid destination', (done)=>{
+        const tripData ={
+            bus_id: "1",
+            origin:  "Lagos",
+            destination: "Abuja###",
+            trip_date: "10/10/2019",
+            fare:"5000"
+        }
+        chai
+        .request(app)
+        .patch(`${URL}/${trip_id}`)
+        .send(tripData)
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(422);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(422);
+            done();
+        })
+    })
+    it('should not allow invalid date', (done)=>{
+        const tripData ={
+            bus_id: "1",
+            origin:  "Lagos",
+            destination: "Abuja",
+            trip_date: "10/1110/2019",
+            fare:"5000"
+        }
+        chai
+        .request(app)
+        .patch(`${URL}/${trip_id}`)
+        .send(tripData)
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(422);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(422);
+            done();
+        })
+    })
+    it('should not allow invalid fare', (done)=>{
+        const tripData ={
+            bus_id: "1",
+            origin:  "Lagos",
+            destination: "Abuja",
+            trip_date: "10/10/2019",
+            fare:"5000a"
+        }
+        chai
+        .request(app)
+        .patch(`${URL}/${trip_id}`)
+        .send(tripData)
+        .set('Authorization', token)
+        .end((error, response)=>{
+            expect(response).to.have.status(422);
+            expect(response.body).to.have.property('error');
+            expect(response.body).to.have.property('status').eql(422);
+            done();
+        })
+    })
+    it('should not allow invalid fare', (done)=>{
+        const tripData ={
+            bus_id: "1",
+            origin:  "Lagos",
+            destination: "Abuja",
+            trip_date: "10/10/2019",
+            fare:"5000"
+        }
         chai
         .request(app)
         .patch(`${URL}/a`)
+        .send(tripData)
         .set('Authorization', token)
         .end((error, response)=>{
             expect(response).to.have.status(422);
             expect(response.body).to.have.property('error');
             expect(response.body).to.have.property('status').eql(422);
+            done();
         })
     })
-    it('should not allow admin to cancel trip if trip id does not exist', ()=>{
-        chai
-        .request(app)
-        .patch(`${URL}/100000`)
-        .set('Authorization', token)
-        .end((error, response)=>{
-            expect(response).to.have.status(404);
-            expect(response.body).to.have.property('error');
-            expect(response.body).to.have.property('status').eql(404);
-        })
-    })
-    
-    it('should not filter trip if body parameter is passed', (done)=>{
-        chai
-        .request(app)
-        .get(`${URL}/destination/Abuja`)
-        .send({destination:"Abuja-Usa"})
-        .set('Authorization', userToken)
-        .end((error, response)=>{
-            expect(response).to.have.status(400);
-            expect(response.body).to.have.property('error');
-            expect(response.body).to.have.property('status').eql(400);
-            done()
-        })
-    })
-    it('should not filter trip if destination is not vaild', (done)=>{
-        chai
-        .request(app)
-        .get(`${URL}/destination/$Abuja-Usa`)
-        .set('Authorization', userToken)
-        .end((error, response)=>{
-            expect(response).to.have.status(422);
-            expect(response.body).to.have.property('error');
-            expect(response.body).to.have.property('status').eql(422);
-            done()
-        })
-    })
-    // it('should filter trip by origin', (done)=>{
-    //     chai
-    //     .request(app)
-    //     .get(`${URL}/origin/Lagos`)
-    //     .set('Authorization', userToken)
-    //     .end((error, response)=>{
-    //         expect(response).to.have.status(200);
-    //         expect(response.body).to.have.property('data');
-    //         expect(response.body).to.have.property('status').eql(200);
-    //         done();
-    //     })
-    // })
-    it('should not filter trip by origin if body parameter is passed', (done)=>{
-        chai
-        .request(app)
-        .get(`${URL}/origin/Lagos`)
-        .send({origin:"Lagos"})
-        .set('Authorization', userToken)
-        .end((error, response)=>{
-            expect(response).to.have.status(400);
-            expect(response.body).to.have.property('error');
-            expect(response.body).to.have.property('status').eql(400);
-            done()
-        })
-    })
-    it('should not filter trip if origin is not vaild', (done)=>{
-        chai
-        .request(app)
-        .get(`/trips/origin/$Lagos`)
-        .set('Authorization', userToken)
-        .end((error, response)=>{
-            expect(response).to.have.status(422);
-            expect(response.body).to.have.property('error');
-            expect(response.body).to.have.property('status').eql(422);
-            done()
-        })
-    })
+
 })
